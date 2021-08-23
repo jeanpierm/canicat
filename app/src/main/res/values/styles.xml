@@ -1,0 +1,6 @@
+<resources>
+    <style name="BoldClickeable">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/brown_500</item>
+    </style>
+</resources>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_login">
+
+    <fragment
+        android:id="@+id/nav_pets"
+        android:name="com.jeanpier.canicat.ui.pets.PetsFragment"
+        android:label="@string/menu_pets"
+        tools:layout="@layout/fragment_pets" >
+        <action
+            android:id="@+id/action_nav_pets_to_nav_pet_form"
+            app:destination="@id/nav_pet_form" />
+        <action
+            android:id="@+id/action_nav_pets_to_nav_pet_details"
+            app:destination="@id/nav_pet_details" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="com.jeanpier.canicat.ui.auth.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_nav_login_to_nav_register"
+            app:destination="@id/nav_register" />
+        <action
+            android:id="@+id/action_nav_login_to_nav_pets"
+            app:destination="@id/nav_pets" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_pet_details"
+        android:name="com.jeanpier.canicat.ui.pets.PetDetailsFragment"
+        android:label="Detalles de mascota"
+        tools:layout="@layout/fragment_pet_details">
+        <action
+            android:id="@+id/action_nav_pet_details_to_nav_pet_form"
+            app:destination="@id/nav_pet_form" />
+        <action
+            android:id="@+id/action_nav_pet_details_to_nav_records"
+            app:destination="@id/nav_records" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_pet_form"
+        android:name="com.jeanpier.canicat.ui.pets.PetFormFragment"
+        android:label="Registro de mascota"
+        tools:layout="@layout/fragment_pet_form" >
+        <action
+            android:id="@+id/action_nav_pet_form_to_nav_pets"
+            app:destination="@id/nav_pets" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_register"
+        android:name="com.jeanpier.canicat.ui.auth.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_nav_register_to_nav_login"
+            app:destination="@id/nav_login" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_search_canicat"
+        android:name="com.jeanpier.canicat.ui.google_maps.SearchCanicatFragment"
+        android:label="@string/menu_search_canicat"
+        tools:layout="@layout/fragment_search_canicat" />
+    <fragment
+        android:id="@+id/nav_records"
+        android:name="com.jeanpier.canicat.ui.records.RecordsFragment"
+        android:label="Registros"
+        tools:layout="@layout/fragment_records" />
+    <fragment
+        android:id="@+id/nav_disease_form"
+        android:name="com.jeanpier.canicat.ui.records.disease.DiseaseFormFragment"
+        android:label="fragment_disease_form"
+        tools:layout="@layout/fragment_disease_form" >
+        <action
+            android:id="@+id/action_nav_disease_form_to_nav_records"
+            app:destination="@id/nav_records" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_treatment_form"
+        android:name="com.jeanpier.canicat.ui.records.treatment.TreatmentFormFragment"
+        android:label="fragment_treatment_form"
+        tools:layout="@layout/fragment_treatment_form" >
+        <action
+            android:id="@+id/action_nav_treatment_form_to_nav_records"
+            app:destination="@id/nav_records" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_vaccine_form"
+        android:name="com.jeanpier.canicat.ui.records.vaccine.VaccineFormFragment"
+        android:label="fragment_vaccine_form"
+        tools:layout="@layout/fragment_vaccine_form" >
+        <action
+            android:id="@+id/action_nav_vaccine_form_to_nav_records"
+            app:destination="@id/nav_records" />
+    </fragment>
+
+</navigation>
