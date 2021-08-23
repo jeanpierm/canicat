@@ -1,7 +1,10 @@
 package com.jeanpier.canicat;
 
+import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,11 +17,13 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 import com.jeanpier.canicat.databinding.ActivityMainBinding;
+import com.jeanpier.canicat.ui.google_maps.SearchCanicatFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_pets, R.id.nav_search_canicat)
                 .setOpenableLayout(drawer)
                 .build();
-        NavController navController = getNavController();
+        navController = getNavController();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
     }
@@ -72,7 +77,26 @@ public class MainActivity extends AppCompatActivity {
         return ((NavHostFragment) fragment).getNavController();
     }
 
-//    public void showFloatingActionButton() {
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == SearchCanicatFragment.REQUEST_CODE_LOCATION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                SearchCanicatFragment.map.setMyLocationEnabled(true);
+            } else {
+                Toast.makeText(this, "Para activar la localización ve a ajustes y acepta los permisos", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
+    //
+//    public NavController getMainNavController() {
+//        return navController;
+//    }
+
+    //    public void showFloatingActionButton() {
 //        binding.appBarMain.fab.show();
 //    }
 //
