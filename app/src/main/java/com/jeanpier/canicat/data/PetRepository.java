@@ -7,7 +7,11 @@ import java.util.List;
 import java.util.UUID;
 
 public class PetRepository {
-    private final PetService petService = new PetService();
+    private final PetService petService;
+
+    public PetRepository(PetService petService) {
+        this.petService = petService;
+    }
 
     public List<Pet> getPetsByUserId(UUID userId) {
         return petService.getPetsByUserId(userId);
