@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_login"
-        android:name="com.jeanpier.canicat.ui.auth.LoginFragment"
+        android:name="com.jeanpier.canicat.ui.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_register"
-        android:name="com.jeanpier.canicat.ui.auth.RegisterFragment"
+        android:name="com.jeanpier.canicat.ui.register.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action

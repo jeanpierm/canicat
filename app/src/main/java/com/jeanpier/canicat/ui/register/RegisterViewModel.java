@@ -1,4 +1,4 @@
-package com.jeanpier.canicat.ui.auth;
+package com.jeanpier.canicat.ui.register;
 
 import androidx.lifecycle.ViewModel;
 

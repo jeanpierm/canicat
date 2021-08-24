@@ -1,7 +1,6 @@
-package com.jeanpier.canicat.ui.auth;
+package com.jeanpier.canicat.ui.login;
 
 import androidx.lifecycle.ViewModel;
 
 public class LoginViewModel extends ViewModel {
-    // TODO: Implement the ViewModel
 }
