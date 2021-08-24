@@ -10,9 +10,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
-import com.jeanpier.canicat.R;
 import com.jeanpier.canicat.databinding.FragmentPetDetailsBinding;
 
 public class PetDetailsFragment extends Fragment {
@@ -43,10 +43,12 @@ public class PetDetailsFragment extends Fragment {
 
     private void initListeners() {
         binding.buttonExample.setOnClickListener(v -> {
-            navController.navigate(R.id.action_nav_pet_details_to_nav_pet_form);
+            NavDirections action = PetDetailsFragmentDirections.actionNavPetDetailsToNavPetForm();
+            navController.navigate(action);
         });
         binding.buttonExample2.setOnClickListener(v -> {
-            navController.navigate(R.id.action_nav_pet_details_to_nav_records);
+            NavDirections action = PetDetailsFragmentDirections.actionNavPetDetailsToNavRecords();
+            navController.navigate(action);
         });
     }
 
