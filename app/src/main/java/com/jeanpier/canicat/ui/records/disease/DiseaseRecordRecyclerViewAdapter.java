@@ -27,7 +27,8 @@ public class DiseaseRecordRecyclerViewAdapter extends RecyclerView.Adapter<Disea
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(FragmentDiseaseRecordBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new ViewHolder(FragmentDiseaseRecordBinding
+                .inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override

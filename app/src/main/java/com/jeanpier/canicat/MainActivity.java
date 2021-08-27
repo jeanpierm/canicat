@@ -16,6 +16,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.jeanpier.canicat.databinding.ActivityMainBinding;
 import com.jeanpier.canicat.ui.google_maps.SearchCanicatFragment;
 
@@ -36,10 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void setupAppBar() {
         setSupportActionBar(binding.appBarMain.toolbar);
-//        binding.appBarMain.fab.setOnClickListener(view -> {
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show();
-//        });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         // Passing each menu ID as a set of Ids because each
@@ -51,13 +48,6 @@ public class MainActivity extends AppCompatActivity {
         navController = getNavController();
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
     }
 
     @Override
@@ -90,17 +80,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    //
-//    public NavController getMainNavController() {
-//        return navController;
-//    }
-
-    //    public void showFloatingActionButton() {
-//        binding.appBarMain.fab.show();
-//    }
-//
-//    public void hideFloatingActionButton() {
-//        binding.appBarMain.fab.hide();
-//    }
+    public NavController getMainNavController() {
+        return navController;
+    }
 }

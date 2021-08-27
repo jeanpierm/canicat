@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/nav_login">
+    app:startDestination="@id/nav_pets">
 
     <fragment
         android:id="@+id/nav_pets"
-        android:name="com.jeanpier.canicat.ui.pets.PetsFragment"
+        android:name="com.jeanpier.canicat.ui.pets.PetFragment"
         android:label="@string/menu_pets"
-        tools:layout="@layout/fragment_pets" >
+        tools:layout="@layout/fragment_pet_list" >
         <action
             android:id="@+id/action_nav_pets_to_nav_pet_form"
             app:destination="@id/nav_pet_form" />
@@ -32,7 +32,7 @@
     <fragment
         android:id="@+id/nav_pet_details"
         android:name="com.jeanpier.canicat.ui.pets.PetDetailsFragment"
-        android:label="Detalles de mascota"
+        android:label="Editar"
         tools:layout="@layout/fragment_pet_details">
         <action
             android:id="@+id/action_nav_pet_details_to_nav_pet_form"

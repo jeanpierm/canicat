@@ -10,8 +10,8 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-public interface PetApiClient {
+public interface DataApi {
 
-    @GET(RetrofitHelper.BASE_URI + RetrofitHelper.PETS_PATH + "/{userId}")
-    Call<List<Pet>> getPetsByUserId(@Path("userId") UUID userId);
+    @GET(RetrofitHelper.USERS_PATH + "/{userId}/" + RetrofitHelper.PETS_PATH)
+    Call<List<Pet>> getPetsByUserId(@Path("userId") String userId);
 }
