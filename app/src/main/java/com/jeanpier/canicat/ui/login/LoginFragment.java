@@ -1,4 +1,4 @@
-package com.jeanpier.canicat.ui.auth;
+package com.jeanpier.canicat.ui.login;
 
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -18,18 +18,18 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.jeanpier.canicat.R;
-import com.jeanpier.canicat.databinding.FragmentRegisterBinding;
+import com.jeanpier.canicat.databinding.FragmentLoginBinding;
 
-public class RegisterFragment extends Fragment {
+public class LoginFragment extends Fragment {
 
-    private RegisterViewModel registerViewModel;
-    private FragmentRegisterBinding binding;
+    private LoginViewModel loginViewModel;
+    private FragmentLoginBinding binding;
     private NavController navController;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = FragmentRegisterBinding.inflate(inflater, container, false);
+        binding = FragmentLoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -50,7 +50,7 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        registerViewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         navController = Navigation.findNavController(view);
         initUI();
     }
@@ -60,18 +60,18 @@ public class RegisterFragment extends Fragment {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         // aplica estilo y texto al mensaje para ir a la pantalla registrar
         TextAppearanceSpan style = new TextAppearanceSpan(getContext(), R.style.BoldClickeable);
-        builder.append(getString(R.string.text_already_have_account))
+        builder.append(getString(R.string.text_dont_have_account))
                 .append(" ")
-                .append(getString(R.string.text_login), style, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        binding.textGoLogin.setText(builder, TextView.BufferType.SPANNABLE);
+                .append(getString(R.string.text_register), style, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        binding.textGoRegister.setText(builder, TextView.BufferType.SPANNABLE);
     }
 
     private void initListeners() {
         binding.buttonLoginExample.setOnClickListener(v -> {
             navController.navigate(R.id.action_nav_login_to_nav_pets);
         });
-        binding.textGoLogin.setOnClickListener(v -> {
-            navController.navigate(R.id.action_nav_register_to_nav_login);
+        binding.textGoRegister.setOnClickListener(v -> {
+            navController.navigate(R.id.action_nav_login_to_nav_register);
         });
     }
 

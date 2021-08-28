@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class PetsViewModel extends ViewModel {
+public class PetViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public PetsViewModel() {
+    public PetViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is pets fragment");
     }
