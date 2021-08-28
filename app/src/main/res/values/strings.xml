@@ -26,4 +26,7 @@
     <string name="title_menu_medical_services">Vacunas</string>
 
     <string name="text_pet_type">%1$s - %2$s</string>
+
+    <string name="get_pets_failed">No se pudo consultar mascotas</string>
+    <string name="get_pets_error">Ocurrió un error al consultar mascotas</string>
 </resources>

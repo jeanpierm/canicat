@@ -35,7 +35,6 @@ public class PetFragment extends Fragment {
     private PetViewModel petViewModel;
     private FragmentPetListBinding binding;
     private NavController navController;
-    private DataApi dataApi;
     private final List<Pet> pets = new ArrayList<>();
     private PetRecyclerViewAdapter adapter;
 
@@ -48,34 +47,9 @@ public class PetFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        petViewModel = new ViewModelProvider(this).get(PetViewModel.class);
+        petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
         navController = Navigation.findNavController(view);
-        dataApi = RetrofitHelper.getHttpClient().create(DataApi.class);
-        loadPets();
         initUI();
-    }
-
-    private void loadPets() {
-        binding.progressIndicator.setVisibility(View.VISIBLE);
-        Call<List<Pet>> call = dataApi.getPetsByUserId("1b3f2fb7-9470-4bc5-b223-c9e4231e279e");
-        call.enqueue(new Callback<List<Pet>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Pet>> call, @NonNull Response<List<Pet>> response) {
-                binding.progressIndicator.setVisibility(View.GONE);
-
-                pets.clear();
-                List<Pet> userPets = response.body() != null ? response.body() : Collections.emptyList();
-                pets.addAll(userPets);
-                adapter.notifyDataSetChanged();
-                Toast.makeText(getContext(), "Mascotas cargadas con éxito", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Pet>> call, @NonNull Throwable t) {
-                Toast.makeText(getContext(), "Error al cargar mascotas", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onFailure: " + t.getMessage());
-            }
-        });
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -93,7 +67,13 @@ public class PetFragment extends Fragment {
     }
 
     private void initObservers() {
-        petViewModel.getText().observe(getViewLifecycleOwner(), s -> {
+        petViewModel.getPets().observe(getViewLifecycleOwner(), petList -> {
+            pets.clear();
+            pets.addAll(petList);
+            adapter.notifyDataSetChanged();
+        });
+        petViewModel.getIsLoading().observe(getViewLifecycleOwner(), integer -> {
+            binding.progressIndicator.setVisibility(integer);
         });
     }
 

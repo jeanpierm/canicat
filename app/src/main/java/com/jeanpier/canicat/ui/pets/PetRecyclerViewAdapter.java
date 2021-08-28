@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.jeanpier.canicat.R;
-import com.jeanpier.canicat.core.RetrofitHelper;
+import com.jeanpier.canicat.config.Routes;
 import com.jeanpier.canicat.data.model.Pet;
 import com.jeanpier.canicat.databinding.FragmentPetBinding;
 
@@ -48,7 +48,7 @@ public class PetRecyclerViewAdapter extends RecyclerView.Adapter<PetRecyclerView
 
 //        Load pet picture
         Glide.with(context)
-                .load(RetrofitHelper.BASE_URI + currentPet.getPicture())
+                .load(Routes.BASE_URI + currentPet.getPicture())
                 .placeholder(R.drawable.logo)
                 .error(R.drawable.logo)
                 .into(holder.binding.circlePicture);
