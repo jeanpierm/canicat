@@ -57,7 +57,7 @@ public class PetFragment extends Fragment {
 
     private void loadPets() {
         binding.progressIndicator.setVisibility(View.VISIBLE);
-        Call<List<Pet>> call = dataApi.getPetsByUserId("1b3f2fb7-9470-4bc5-b223-c9e4231e279e");
+        Call<List<Pet>> call = dataApi.getPetsByUserId("21e0a26e-01c1-409d-9b19-f6393019aa9b");
         call.enqueue(new Callback<List<Pet>>() {
             @Override
             public void onResponse(@NonNull Call<List<Pet>> call, @NonNull Response<List<Pet>> response) {

@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jeanpier.canicat.R;
-import com.jeanpier.canicat.ui.pets.PetsViewModel;
 import com.jeanpier.canicat.ui.records.placeholder.PlaceholderContent;
 
 /**
@@ -74,6 +73,5 @@ public class VaccineRecordFragment extends Fragment {
         }
         return view;
     }
-
 
 }

@@ -8,10 +8,12 @@ import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface DataApi {
 
     @GET(RetrofitHelper.USERS_PATH + "/{userId}/" + RetrofitHelper.PETS_PATH)
     Call<List<Pet>> getPetsByUserId(@Path("userId") String userId);
+
 }
