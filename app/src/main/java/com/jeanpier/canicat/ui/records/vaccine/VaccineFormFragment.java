@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,10 +22,18 @@ import androidx.navigation.Navigation;
 
 import com.jeanpier.canicat.MainActivity;
 import com.jeanpier.canicat.R;
+import com.jeanpier.canicat.data.model.VaccineRecord;
+import com.jeanpier.canicat.data.network.DataApi;
+import com.jeanpier.canicat.data.network.VaccineRecordService;
 import com.jeanpier.canicat.databinding.FragmentVaccineFormBinding;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class VaccineFormFragment extends Fragment {
 
@@ -33,6 +42,9 @@ public class VaccineFormFragment extends Fragment {
     private NavController navController;
     private DatePickerDialog.OnDateSetListener onDateSetListener;
     private DatePickerDialog.OnDateSetListener onDateSetListener2;
+    private String lastDate;
+    private String nextDate;
+    private final VaccineRecordService vaccineRecordService = new VaccineRecordService();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -60,6 +72,7 @@ public class VaccineFormFragment extends Fragment {
                 cal.set(Calendar.YEAR, year);
                 cal.set(Calendar.MONTH, month);
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                lastDate= new SimpleDateFormat("yyyy-mm-dd").format(cal.getTime());
                 String hoy =  DateFormat.getDateInstance().format(cal.getTime());
                 binding.textDate.setText(hoy);
             }
@@ -85,12 +98,43 @@ public class VaccineFormFragment extends Fragment {
                 cal.set(Calendar.YEAR, year);
                 cal.set(Calendar.MONTH, month);
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                nextDate= new SimpleDateFormat("yyyy-mm-dd").format(cal.getTime());
                 String hoy =  DateFormat.getDateInstance().format(cal.getTime());
                 binding.textDateNext.setText(hoy);
             }
         };
 
         return binding.getRoot();
+    }
+
+    private void onSubmit(View view) {
+        if(isValidForm()){
+            VaccineRecord vaccineRecord = new VaccineRecord(
+                    "VACCINEEEE",
+                    "VACCINEEEEE",
+                    "2021-08-01",
+                    "2021-08-01",
+                    "CDNCD",
+                    "533b12fd-2a36-4600-95f0-fc388d9cacc1"
+            );
+            Call<VaccineRecord> call= vaccineRecordService.saveVaccineRecord(vaccineRecord);
+            call.enqueue(new Callback<VaccineRecord>() {
+                @Override
+                public void onResponse(Call<VaccineRecord> call, Response<VaccineRecord> response) {
+                    if(!response.isSuccessful()){
+                        Toast.makeText(getContext(), "Error al guardar vacuna" + response.code(), Toast.LENGTH_LONG);
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<VaccineRecord> call, Throwable t) {
+                    Toast.makeText(getContext(), "Error!" + t.getMessage(), Toast.LENGTH_LONG);
+                }
+            });
+        }else{
+            Toast.makeText(getContext(), "FALTAN DATOS", Toast.LENGTH_LONG);
+        }
     }
 
     @Override
@@ -111,8 +155,9 @@ public class VaccineFormFragment extends Fragment {
     }
 
     private void initListeners() {
-        binding.buttonExample.setOnClickListener(v -> {
-            navController.navigate(R.id.action_nav_vaccine_form_to_nav_records);
+        binding.guardar.setOnClickListener(v -> {
+            onSubmit(v);
+            //navController.navigate(R.id.action_nav_vaccine_form_to_nav_records);
         });
     }
 
@@ -121,4 +166,26 @@ public class VaccineFormFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+    public boolean isValidForm(){
+
+        if(binding.vaccineName.getText().toString().isEmpty()){
+            return false;
+        }
+
+        if(binding.vaccineType.getText().toString().isEmpty()){
+            return false;
+        }
+
+        if(binding.vaccineDescription.getText().toString().isEmpty()){
+            return false;
+        }
+
+        if(lastDate.isEmpty() || nextDate.isEmpty()){
+            return false;
+        }
+
+        return true;
+    }
+
 }
