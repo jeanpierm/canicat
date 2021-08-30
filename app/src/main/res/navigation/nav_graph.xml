@@ -7,15 +7,12 @@
 
     <fragment
         android:id="@+id/nav_pets"
-        android:name="com.jeanpier.canicat.ui.pets.PetFragment"
+        android:name="com.jeanpier.canicat.ui.pets.fragments.PetFragment"
         android:label="@string/menu_pets"
         tools:layout="@layout/fragment_pet_list" >
         <action
             android:id="@+id/action_nav_pets_to_nav_pet_form"
             app:destination="@id/nav_pet_form" />
-        <action
-            android:id="@+id/action_nav_pets_to_nav_pet_details"
-            app:destination="@id/nav_pet_details" />
     </fragment>
     <fragment
         android:id="@+id/nav_login"
@@ -30,25 +27,23 @@
             app:destination="@id/nav_pets" />
     </fragment>
     <fragment
-        android:id="@+id/nav_pet_details"
-        android:name="com.jeanpier.canicat.ui.pets.PetDetailsFragment"
-        android:label="Editar"
-        tools:layout="@layout/fragment_pet_details">
-        <action
-            android:id="@+id/action_nav_pet_details_to_nav_pet_form"
-            app:destination="@id/nav_pet_form" />
-        <action
-            android:id="@+id/action_nav_pet_details_to_nav_records"
-            app:destination="@id/nav_records" />
-    </fragment>
-    <fragment
         android:id="@+id/nav_pet_form"
-        android:name="com.jeanpier.canicat.ui.pets.PetFormFragment"
+        android:name="com.jeanpier.canicat.ui.pets.fragments.PetFormFragment"
         android:label="Registro de mascota"
         tools:layout="@layout/fragment_pet_form" >
         <action
             android:id="@+id/action_nav_pet_form_to_nav_pets"
             app:destination="@id/nav_pets" />
+        <argument
+            android:name="pet"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="action"
+            app:argType="com.jeanpier.canicat.core.FormAction" />
+        <action
+            android:id="@+id/action_nav_pet_form_to_nav_records"
+            app:destination="@id/nav_records" />
     </fragment>
     <fragment
         android:id="@+id/nav_register"

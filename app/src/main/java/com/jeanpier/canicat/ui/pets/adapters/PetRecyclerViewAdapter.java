@@ -1,21 +1,23 @@
-package com.jeanpier.canicat.ui.pets;
+package com.jeanpier.canicat.ui.pets.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.gson.Gson;
 import com.jeanpier.canicat.R;
 import com.jeanpier.canicat.config.Routes;
+import com.jeanpier.canicat.core.FormAction;
 import com.jeanpier.canicat.data.model.Pet;
-import com.jeanpier.canicat.databinding.FragmentPetBinding;
+import com.jeanpier.canicat.databinding.PetItemBinding;
+import com.jeanpier.canicat.ui.pets.fragments.PetFragmentDirections;
 
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class PetRecyclerViewAdapter extends RecyclerView.Adapter<PetRecyclerView
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(FragmentPetBinding
+        return new ViewHolder(PetItemBinding
                 .inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
@@ -42,20 +44,27 @@ public class PetRecyclerViewAdapter extends RecyclerView.Adapter<PetRecyclerView
 
         holder.binding.textName.setText(currentPet.getName());
         holder.binding.textType.setText(
-                String.format(res.getString(R.string.text_pet_type), currentPet.getRace(),
+                String.format(res.getString(R.string.text_pet_type), currentPet.getBreed(),
                         currentPet.getSpecies())
         );
 
-//        Load pet picture
-        Glide.with(context)
-                .load(Routes.BASE_URI + currentPet.getPicture())
-                .placeholder(R.drawable.logo)
-                .error(R.drawable.logo)
-                .into(holder.binding.circlePicture);
+        if (currentPet.getPicture() != null) {
+//          Load pet picture
+            Glide.with(context)
+                    .load(Routes.BASE_URI + currentPet.getPicture())
+                    .placeholder(R.drawable.ic_pet_placeholder)
+                    .error(R.drawable.ic_pet_placeholder)
+//                  Se desactiva el caché para evitar que al cambiar de imagen aparezca la antigua
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(holder.binding.circlePicture);
+        }
 
         holder.binding.layoutPet.setOnClickListener(v -> {
-            Toast.makeText(context, "Click a " + currentPet.getName(), Toast.LENGTH_SHORT).show();
-            NavDirections action = PetFragmentDirections.actionNavPetsToNavPetForm();
+            PetFragmentDirections.ActionNavPetsToNavPetForm action =
+                    PetFragmentDirections.actionNavPetsToNavPetForm(
+                            new Gson().toJson(currentPet), FormAction.EDIT
+                    );
             Navigation.findNavController(v).navigate(action);
         });
 
@@ -69,9 +78,9 @@ public class PetRecyclerViewAdapter extends RecyclerView.Adapter<PetRecyclerView
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final FragmentPetBinding binding;
+        private final PetItemBinding binding;
 
-        public ViewHolder(FragmentPetBinding binding) {
+        public ViewHolder(PetItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

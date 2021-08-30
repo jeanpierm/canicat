@@ -1,4 +1,4 @@
-package com.jeanpier.canicat.ui.pets;
+package com.jeanpier.canicat.ui.pets.viewmodels;
 
 import androidx.lifecycle.ViewModel;
 

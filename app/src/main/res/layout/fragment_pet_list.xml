@@ -4,21 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.pets.PetFragment">
+    tools:context=".ui.pets.fragments.PetFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_pets"
         android:name="com.jeanpier.canicat.ui.records.DiseaseFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="LinearLayoutManager"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:itemCount="3"
-        tools:listitem="@layout/fragment_pet" />
+        app:spanCount="2"
+        tools:itemCount="4"
+        android:padding="10dp"
+        tools:listitem="@layout/pet_item" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_pet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -26,14 +29,13 @@
         android:contentDescription="TODO"
         android:src="@drawable/ic_pets"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:tint="@color/white"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ProgressBar
         android:id="@+id/progress_indicator"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
