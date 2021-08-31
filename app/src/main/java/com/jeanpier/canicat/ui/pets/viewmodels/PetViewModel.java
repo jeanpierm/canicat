@@ -1,4 +1,4 @@
-package com.jeanpier.canicat.ui.pets;
+package com.jeanpier.canicat.ui.pets.viewmodels;
 
 import android.app.Application;
 import android.util.Log;
@@ -10,7 +10,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.jeanpier.canicat.R;
-import com.jeanpier.canicat.core.RetrofitHelper;
 import com.jeanpier.canicat.data.model.Pet;
 import com.jeanpier.canicat.data.network.PetService;
 import com.jeanpier.canicat.util.ToastUtil;
@@ -25,8 +24,9 @@ import retrofit2.Response;
 public class PetViewModel extends AndroidViewModel {
 
     private static final String TAG = "PetViewModel";
-    private final MutableLiveData<Integer> isLoading = new MutableLiveData<>();
+    private final MutableLiveData<Integer> loading = new MutableLiveData<>();
     private final PetService petService = new PetService();
+    private final MutableLiveData<String> uid = new MutableLiveData<>();
     private MutableLiveData<List<Pet>> pets;
 
     public PetViewModel(@NonNull Application application) {
@@ -41,18 +41,27 @@ public class PetViewModel extends AndroidViewModel {
         return pets;
     }
 
-    public LiveData<Integer> getIsLoading() {
-        return isLoading;
+    public LiveData<String> getUID() {
+        return uid;
     }
 
-    private void loadPets() {
-        isLoading.postValue(View.VISIBLE);
-        Call<List<Pet>> call = petService.getPetsByUserId("21e0a26e-01c1-409d-9b19-f6393019aa9b");
+    public void setUID(String userId) {
+        uid.setValue(userId);
+    }
+
+    public LiveData<Integer> isLoading() {
+        return loading;
+    }
+
+    public void loadPets() {
+        loading.postValue(View.VISIBLE);
+        String userId = uid.getValue();
+        Call<List<Pet>> call = petService.getByUserId(userId);
         call.enqueue(new Callback<List<Pet>>() {
             @Override
             public void onResponse(@NonNull Call<List<Pet>> call, @NonNull Response<List<Pet>> response) {
                 if (response.isSuccessful()) {
-                    isLoading.postValue(View.GONE);
+                    loading.postValue(View.GONE);
                     List<Pet> userPets = response.body() != null ?
                             response.body() : Collections.emptyList();
                     Log.d(TAG, "onResponse: Pets cargados con éxito: " + userPets.size());
@@ -67,6 +76,7 @@ public class PetViewModel extends AndroidViewModel {
             public void onFailure(@NonNull Call<List<Pet>> call, @NonNull Throwable t) {
                 ToastUtil.show(getApplication(), getApplication().getString(R.string.get_pets_failed));
                 Log.d(TAG, "onFailure: " + t.getMessage());
+                t.printStackTrace();
             }
         });
     }

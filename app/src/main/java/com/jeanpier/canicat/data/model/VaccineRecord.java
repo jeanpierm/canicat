@@ -15,20 +15,20 @@ public class VaccineRecord {
     private String nextVaccineDate;
     @SerializedName("description")
     private String description;
-    @SerializedName("PetId")
-    private String PetId;
+    @SerializedName("petId")
+    private String petId;
 
     public VaccineRecord(){
 
     }
 
-    public VaccineRecord(String name, String type, String lastVaccineDate, String nextVaccineDate, String description, String PetId) {
+    public VaccineRecord(String name, String type, String lastVaccineDate, String nextVaccineDate, String description, String petId) {
         this.name = name;
         this.type = type;
         this.lastVaccineDate = lastVaccineDate;
         this.nextVaccineDate = nextVaccineDate;
         this.description = description;
-        this.PetId = PetId;
+        this.petId = petId;
     }
 
     public String getId() {
@@ -80,11 +80,11 @@ public class VaccineRecord {
     }
 
     public String getPetId() {
-        return PetId;
+        return petId;
     }
 
     public void setPetId(String petId) {
-        PetId = petId;
+        this.petId = petId;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class VaccineRecord {
                 ", lastVaccineDate='" + lastVaccineDate + '\'' +
                 ", nextVaccineDate='" + nextVaccineDate + '\'' +
                 ", description='" + description + '\'' +
-                ", PetId='" + PetId + '\'' +
+                ", petId='" + petId + '\'' +
                 '}';
     }
 }

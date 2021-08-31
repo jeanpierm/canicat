@@ -12,26 +12,25 @@ public class Pet {
     private String name;
     @SerializedName("species")
     private String species;
-    @SerializedName("race")
-    private String race;
+    @SerializedName("breed")
+    private String breed;
     @SerializedName("sexo")
     private String sexo;
-    @SerializedName("color")
-    private String color;
     @SerializedName("picture")
     private String picture;
+    @SerializedName("userId")
+    private String userId;
 
     public Pet() {
     }
 
-    public Pet(String id, String name, String species, String race, String sexo, String color, String picture) {
-        this.id = id;
+    public Pet(String name, String species, String breed, String sexo, String picture, String userId) {
         this.name = name;
         this.species = species;
-        this.race = race;
+        this.breed = breed;
         this.sexo = sexo;
-        this.color = color;
         this.picture = picture;
+        this.userId = userId;
     }
 
     public String getId() {
@@ -58,12 +57,12 @@ public class Pet {
         this.species = species;
     }
 
-    public String getRace() {
-        return race;
+    public String getBreed() {
+        return breed;
     }
 
-    public void setRace(String race) {
-        this.race = race;
+    public void setBreed(String breed) {
+        this.breed = breed;
     }
 
     public String getSexo() {
@@ -74,14 +73,6 @@ public class Pet {
         this.sexo = sexo;
     }
 
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
     public String getPicture() {
         return picture;
     }
@@ -90,17 +81,24 @@ public class Pet {
         this.picture = picture;
     }
 
-    @NonNull
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
         return "Pet{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", species='" + species + '\'' +
-                ", race='" + race + '\'' +
+                ", breed='" + breed + '\'' +
                 ", sexo='" + sexo + '\'' +
-                ", color='" + color + '\'' +
                 ", picture='" + picture + '\'' +
+                ", userId='" + userId + '\'' +
                 '}';
     }
 }

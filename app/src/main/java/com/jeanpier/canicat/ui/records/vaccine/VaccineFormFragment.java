@@ -30,6 +30,7 @@ import com.jeanpier.canicat.databinding.FragmentVaccineFormBinding;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,6 +45,7 @@ public class VaccineFormFragment extends Fragment {
     private DatePickerDialog.OnDateSetListener onDateSetListener2;
     private String lastDate;
     private String nextDate;
+    private static final String TAG = "VaccineFormFragment";
     private final VaccineRecordService vaccineRecordService = new VaccineRecordService();
 
     @Override
@@ -68,11 +70,10 @@ public class VaccineFormFragment extends Fragment {
         onDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Calendar cal =  Calendar.getInstance();
-                cal.set(Calendar.YEAR, year);
-                cal.set(Calendar.MONTH, month);
-                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                lastDate= new SimpleDateFormat("yyyy-mm-dd").format(cal.getTime());
+                Calendar cal = Calendar.getInstance();
+                cal.set(year, month, dayOfMonth);
+                String format = "yyyy-MM-dd";
+                lastDate = new SimpleDateFormat(format).format(cal.getTime());
                 String hoy =  DateFormat.getDateInstance().format(cal.getTime());
                 binding.textDate.setText(hoy);
             }
@@ -94,11 +95,10 @@ public class VaccineFormFragment extends Fragment {
         onDateSetListener2 = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                Calendar cal =  Calendar.getInstance();
-                cal.set(Calendar.YEAR, year);
-                cal.set(Calendar.MONTH, month);
-                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                nextDate= new SimpleDateFormat("yyyy-mm-dd").format(cal.getTime());
+                Calendar cal = Calendar.getInstance();
+                cal.set(year, month, dayOfMonth);
+                String format = "yyyy-MM-dd";
+                nextDate = new SimpleDateFormat(format).format(cal.getTime());
                 String hoy =  DateFormat.getDateInstance().format(cal.getTime());
                 binding.textDateNext.setText(hoy);
             }
@@ -108,33 +108,45 @@ public class VaccineFormFragment extends Fragment {
     }
 
     private void onSubmit(View view) {
-        if(isValidForm()){
-            VaccineRecord vaccineRecord = new VaccineRecord(
-                    "VACCINEEEE",
-                    "VACCINEEEEE",
-                    "2021-08-01",
-                    "2021-08-01",
-                    "CDNCD",
-                    "533b12fd-2a36-4600-95f0-fc388d9cacc1"
-            );
-            Call<VaccineRecord> call= vaccineRecordService.saveVaccineRecord(vaccineRecord);
-            call.enqueue(new Callback<VaccineRecord>() {
-                @Override
-                public void onResponse(Call<VaccineRecord> call, Response<VaccineRecord> response) {
-                    if(!response.isSuccessful()){
-                        Toast.makeText(getContext(), "Error al guardar vacuna" + response.code(), Toast.LENGTH_LONG);
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<VaccineRecord> call, Throwable t) {
-                    Toast.makeText(getContext(), "Error!" + t.getMessage(), Toast.LENGTH_LONG);
-                }
-            });
-        }else{
-            Toast.makeText(getContext(), "FALTAN DATOS", Toast.LENGTH_LONG);
+        if(!isValidForm()){
+            Toast.makeText(getContext(), "Por favor, llene todos los campos", Toast.LENGTH_LONG);
+            Log.d(TAG, "FALTAN DATOS" );
+            return;
         }
+
+        VaccineRecord vaccineRecord = new VaccineRecord(
+                binding.vaccineName.getText().toString(),
+                binding.vaccineType.getText().toString(),
+                lastDate,
+                nextDate,
+                binding.vaccineDescription.getText().toString(),
+                "f8b2762e-624d-4275-abf4-88d9a5a6dac6"
+        );
+        Call<VaccineRecord> call= vaccineRecordService.saveVaccineRecord(vaccineRecord);
+        call.enqueue(new Callback<VaccineRecord>() {
+            @Override
+            public void onResponse(Call<VaccineRecord> call, Response<VaccineRecord> response) {
+                if(!response.isSuccessful()){
+                    Toast.makeText(getContext(), "Error al guardar vacuna" + response.code(), Toast.LENGTH_LONG);
+                    Log.d(TAG, "onResponse: Ha ocurrido un error" + response.code() + response.errorBody());
+                }else{
+                    Toast.makeText(getContext(), "Registro guardado con exito", Toast.LENGTH_LONG);
+                    binding.vaccineName.setText("");
+                    binding.vaccineType.setText("");
+                    binding.description.setText("");
+                    binding.textDateNext.setText("");
+                    binding.textDateNext.setText("");
+                    lastDate = "";
+                    nextDate = "";
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VaccineRecord> call, Throwable t) {
+                Toast.makeText(getContext(), "Error!" + t.getMessage(), Toast.LENGTH_LONG);
+                Log.d(TAG, "onResponse: error" + t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -157,7 +169,7 @@ public class VaccineFormFragment extends Fragment {
     private void initListeners() {
         binding.guardar.setOnClickListener(v -> {
             onSubmit(v);
-            //navController.navigate(R.id.action_nav_vaccine_form_to_nav_records);
+            navController.navigate(R.id.action_nav_vaccine_form_to_nav_records);
         });
     }
 
