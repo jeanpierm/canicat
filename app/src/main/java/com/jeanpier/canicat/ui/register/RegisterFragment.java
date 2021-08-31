@@ -9,6 +9,7 @@ import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -41,6 +42,12 @@ import retrofit2.Response;
 
 public class RegisterFragment extends Fragment {
 
+    private static final String KEY_FIRSTNAME = "firstname";
+    private static final String KEY_LASTNAME = "lastname";
+    private static final String KEY_DNI = "dni";
+    private static final String KEY_EMAIL = "email";
+    private static final String KEY_PASSWORD = "password";
+    private static final String KEY_PASSWORD2 = "password2";
     private PetViewModel petViewModel;
     private FragmentRegisterBinding binding;
     private NavController navController;
@@ -60,6 +67,30 @@ public class RegisterFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            editDni.setText(savedInstanceState.getString(KEY_FIRSTNAME, ""));
+            editFirstname.setText(savedInstanceState.getString(KEY_LASTNAME, ""));
+            editLastname.setText(savedInstanceState.getString(KEY_DNI, ""));
+            editEmail.setText(savedInstanceState.getString(KEY_EMAIL, ""));
+            editPassword.setText(savedInstanceState.getString(KEY_PASSWORD, ""));
+            editPassword2.setText(savedInstanceState.getString(KEY_PASSWORD2, ""));
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(KEY_FIRSTNAME, TextFieldUtil.getString(editFirstname));
+        outState.putString(KEY_LASTNAME, TextFieldUtil.getString(editLastname));
+        outState.putString(KEY_DNI, TextFieldUtil.getString(editDni));
+        outState.putString(KEY_EMAIL, TextFieldUtil.getString(editEmail));
+        outState.putString(KEY_PASSWORD, TextFieldUtil.getString(editPassword));
+        outState.putString(KEY_PASSWORD2, TextFieldUtil.getString(editPassword2));
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         Objects.requireNonNull(
@@ -73,7 +104,6 @@ public class RegisterFragment extends Fragment {
         Objects.requireNonNull(
                 ((AppCompatActivity) requireActivity()).getSupportActionBar()
         ).show();
-//        ((MainActivity) getActivity()).showFloatingActionButton();
     }
 
     @Override
@@ -272,10 +302,7 @@ public class RegisterFragment extends Fragment {
             editPassword2.requestFocus();
             return false;
         }
-        if (!Objects.equals(
-                Objects.requireNonNull(editPassword2.getText()).toString(),
-                Objects.requireNonNull(editPassword.getText()).toString())
-        ) {
+        if (!TextFieldUtil.getString(editPassword2).equals(TextFieldUtil.getString(editPassword))) {
             layoutPassword2.setError(getString(R.string.password_must_be_equals));
             layoutPassword.setError(getString(R.string.password_must_be_equals));
             editPassword2.requestFocus();
