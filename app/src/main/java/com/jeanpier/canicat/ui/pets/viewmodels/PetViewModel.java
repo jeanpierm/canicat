@@ -68,7 +68,7 @@ public class PetViewModel extends AndroidViewModel {
                     pets.postValue(userPets);
                 } else {
                     ToastUtil.show(getApplication(), getApplication().getString(R.string.get_pets_error));
-                    Log.d(TAG, "onResponse: Ha ocurrido un error");
+                    Log.d(TAG, "onResponse: Ha ocurrido un error" + response.errorBody());
                 }
             }
 

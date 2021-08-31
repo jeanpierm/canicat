@@ -42,7 +42,7 @@
     <string name="pet_created_successfull">La mascota se añadió exitosamente :D</string>
     <string name="pet_created_failed">Ocurrió un fallo al intentar añadir la mascota :(</string>
     <string name="pet_created_error">Ocurrió un error al intentar añadir la mascota :(</string>
-    <string name="alert_complete_fields">Por favor, complete todos los campos</string>
+    <string name="alert_complete_fields">Por favor, complete todos los campos correctamente</string>
     <string name="title_edit">Editar mascota</string>
     <string name="alert_delete_confirmation">¿Está seguro de eliminar a %1$s?</string>
     <string name="pet_deleted_succesfull">Mascota eliminada exitosamente :D</string>
@@ -51,4 +51,22 @@
     <string name="label_cancel">Cancelar</string>
     <string name="label_yes">Sí</string>
     <string name="label_ok">Ok</string>
+    <string name="logo_header_subtitle">Canicat App</string>
+    <string name="label_firstname">Nombres</string>
+    <string name="label_lastname">Apellidos</string>
+    <string name="label_dni">Cédula</string>
+    <string name="label_email">Correo electrónico</string>
+    <string name="label_password">Contraseña</string>
+    <string name="label_repeat_password">Repetir contraseña</string>
+    <string name="label_login">Iniciar sesión</string>
+    <string name="required_field">Campo requerido</string>
+    <string name="invalid_email">Email inválido</string>
+    <string name="only_numbers">La cédula solo debe contener números</string>
+    <string name="password_min_length">La contraseña debe tener al menos 4 caracteres</string>
+    <string name="password_must_be_equals">Las contraseñas no coinciden</string>
+    <string name="dni_must_be_valid">La cédula debe ser válida</string>
+    <string name="error_not_user_id">No se obtuvo el id del usuario creado</string>
+    <string name="login_successfull">Inicio de sesión exitoso</string>
+    <string name="login_error">Ocurrió un error al intentar iniciar sesión</string>
+    <string name="login_failed">Ocurrió un fallo al intentar iniciar sesión</string>
 </resources>

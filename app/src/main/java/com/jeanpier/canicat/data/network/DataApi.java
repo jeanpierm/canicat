@@ -2,7 +2,9 @@ package com.jeanpier.canicat.data.network;
 
 import com.jeanpier.canicat.config.Routes;
 import com.jeanpier.canicat.data.model.Pet;
+import com.jeanpier.canicat.data.model.User;
 import com.jeanpier.canicat.data.network.responses.PostPetResponse;
+import com.jeanpier.canicat.data.network.responses.PostUserResponse;
 
 import java.util.List;
 
@@ -21,6 +23,9 @@ public interface DataApi {
 
     @POST(Routes.API_APTH + Routes.PETS_PATH)
     Call<PostPetResponse> createPet(@Body Pet pet);
+
+    @POST(Routes.API_APTH + Routes.USERS_PATH)
+    Call<PostUserResponse> createUser(@Body User user);
 
     @PATCH(Routes.API_APTH + Routes.PETS_PATH + "/{petId}")
     Call<Void> updatePetById(@Path("petId") String petId, @Body Pet pet);

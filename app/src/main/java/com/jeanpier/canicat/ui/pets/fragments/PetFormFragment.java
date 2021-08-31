@@ -41,8 +41,10 @@ import com.jeanpier.canicat.data.network.responses.PostPetResponse;
 import com.jeanpier.canicat.databinding.FragmentPetFormBinding;
 import com.jeanpier.canicat.ui.pets.viewmodels.PetFormViewModel;
 import com.jeanpier.canicat.ui.pets.viewmodels.PetViewModel;
+import com.jeanpier.canicat.util.AlertUtil;
 import com.jeanpier.canicat.util.KeyboardUtil;
 import com.jeanpier.canicat.util.ParseUtil;
+import com.jeanpier.canicat.util.TextFieldUtil;
 import com.jeanpier.canicat.util.ToastUtil;
 
 import java.io.IOException;
@@ -99,8 +101,6 @@ public class PetFormFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        petFormViewModel = new ViewModelProvider(this).get(PetFormViewModel.class);
-        petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
         navController = Navigation.findNavController(view);
         initUI();
     }
@@ -121,17 +121,16 @@ public class PetFormFragment extends Fragment {
         menuEdit.setOnMenuItemClickListener(item -> {
             editMode();
 //            pone focus al editText del nombre, indicandole al usuario que puede editar
-            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) requireActivity()
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(editName, InputMethodManager.SHOW_IMPLICIT);
             return false;
         });
 
         menuSave.setOnMenuItemClickListener(item -> {
-            if (!validateFormFields()) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(requireContext());
-                alertDialog.setMessage(getString(R.string.alert_complete_fields));
-                alertDialog.setPositiveButton(getString(R.string.label_ok), (dialog, which) -> dialog.dismiss());
-                alertDialog.show();
+            if (!isFormValid()) {
+                AlertUtil.showErrorAlertDialog(getString(R.string.alert_complete_fields),
+                        getString(R.string.label_ok), requireContext());
                 return false;
             }
             KeyboardUtil.hideKeyboard(requireActivity());
@@ -161,7 +160,6 @@ public class PetFormFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-
     private void initUI() {
         editName = binding.editName;
         editSpecies = binding.editSpecies;
@@ -180,7 +178,7 @@ public class PetFormFragment extends Fragment {
         setActionBarTitle();
         loadDropdownOptions();
         initListeners();
-        initObservers();
+        initViewModels();
     }
 
     private void postPet() {
@@ -253,6 +251,7 @@ public class PetFormFragment extends Fragment {
                     navController.navigate(PetFormFragmentDirections.actionNavPetFormToNavPets());
                 } else {
                     ToastUtil.show(requireContext(), getString(R.string.pet_deleted_error));
+                    Log.d(TAG, "onResponse: " + response.errorBody());
                 }
                 Log.d(TAG, "onResponse: " + response.toString());
             }
@@ -286,7 +285,9 @@ public class PetFormFragment extends Fragment {
         editSexo.setText(pet.getSexo(), false);
     }
 
-    private void initObservers() {
+    private void initViewModels() {
+        petFormViewModel = new ViewModelProvider(this).get(PetFormViewModel.class);
+        petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
         petViewModel.getUID().observe(getViewLifecycleOwner(), s -> uid = s);
     }
 
@@ -326,7 +327,7 @@ public class PetFormFragment extends Fragment {
         formAction = PetFormFragmentArgs.fromBundle(getArguments()).getAction();
     }
 
-    private boolean validateFormFields() {
+    private boolean isFormValid() {
         return !Objects.requireNonNull(editName.getText()).toString().isEmpty()
                 && !Objects.requireNonNull(editSpecies.getText()).toString().isEmpty()
                 && !Objects.requireNonNull(editBreed.getText()).toString().isEmpty()
@@ -334,9 +335,9 @@ public class PetFormFragment extends Fragment {
     }
 
     private Pet buildPetFromForm() {
-        String name = Objects.requireNonNull(editName.getText()).toString().trim();
-        String species = Objects.requireNonNull(editSpecies.getText()).toString().trim();
-        String breed = Objects.requireNonNull(editBreed.getText()).toString().trim();
+        String name = TextFieldUtil.getString(editName);
+        String species = TextFieldUtil.getString(editSpecies);
+        String breed = TextFieldUtil.getString(editBreed);
         String sexo = editSexo.getText().toString().trim();
         String picture = pictureBitmap != null ? ParseUtil.parseBitmapToBase64(pictureBitmap) : null;
         return new Pet(name, species, breed, sexo, picture, uid);

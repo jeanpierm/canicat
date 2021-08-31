@@ -1,5 +1,6 @@
 package com.jeanpier.canicat.ui.pets.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -23,10 +24,16 @@ import java.util.List;
 
 public class PetRecyclerViewAdapter extends RecyclerView.Adapter<PetRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Pet> pets;
+    private List<Pet> pets;
 
     public PetRecyclerViewAdapter(List<Pet> pets) {
         this.pets = pets;
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
+        notifyDataSetChanged();
     }
 
     @NonNull

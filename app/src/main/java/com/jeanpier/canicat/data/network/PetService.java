@@ -9,6 +9,7 @@ import java.util.List;
 import retrofit2.Call;
 
 public class PetService {
+
     private final DataApi dataApi = RetrofitHelper.getHttpClient().create(DataApi.class);
 
     public Call<List<Pet>> getByUserId(String userId) {
