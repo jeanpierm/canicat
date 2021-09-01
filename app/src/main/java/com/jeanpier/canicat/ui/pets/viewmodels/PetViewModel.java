@@ -49,6 +49,10 @@ public class PetViewModel extends AndroidViewModel {
         uid.setValue(userId);
     }
 
+    public void clearUID() {
+        uid.setValue(null);
+    }
+
     public LiveData<Integer> isLoading() {
         return loading;
     }

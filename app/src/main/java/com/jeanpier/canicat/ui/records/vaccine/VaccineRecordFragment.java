@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jeanpier.canicat.R;
-import com.jeanpier.canicat.ui.records.placeholder.PlaceholderContent;
 
 /**
  * A fragment representing a list of Items.
@@ -54,19 +53,6 @@ public class VaccineRecordFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_vaccine_record_list, container, false);
-
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new VaccineRecordRecyclerViewAdapter(PlaceholderContent.ITEMS));
-        }
-        return view;
+        return inflater.inflate(R.layout.fragment_vaccine_record_list, container, false);
     }
 }

@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.jeanpier.canicat.ui.records.disease.DiseaseRecordFragment;
-import com.jeanpier.canicat.ui.records.treatment.TreatmentRecordFragment;
 import com.jeanpier.canicat.ui.records.vaccine.VaccineRecordFragment;
 
 public class RecordsAdapter extends FragmentStateAdapter {
@@ -21,12 +19,6 @@ public class RecordsAdapter extends FragmentStateAdapter {
         switch (position) {
             case 0:
                 fragment = new VaccineRecordFragment();
-                break;
-            case 1:
-                fragment = new DiseaseRecordFragment();
-                break;
-            case 2:
-                fragment = new TreatmentRecordFragment();
                 break;
         }
         return fragment;

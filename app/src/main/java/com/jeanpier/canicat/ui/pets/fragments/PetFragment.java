@@ -2,9 +2,13 @@ package com.jeanpier.canicat.ui.pets.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -13,6 +17,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
+import com.jeanpier.canicat.R;
 import com.jeanpier.canicat.core.FormAction;
 import com.jeanpier.canicat.data.model.Pet;
 import com.jeanpier.canicat.databinding.FragmentPetListBinding;
@@ -27,9 +32,23 @@ public class PetFragment extends Fragment {
     private PetViewModel petViewModel;
     private FragmentPetListBinding binding;
     private PetRecyclerViewAdapter adapter;
+    private NavController navController;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         binding = FragmentPetListBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -37,7 +56,23 @@ public class PetFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
         initUI();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_logout, menu);
+
+        MenuItem menuLogout = menu.findItem(R.id.menu_logout);
+//        vuelve a login si se da click al icono de logout
+        menuLogout.setOnMenuItemClickListener(item -> {
+            navController.navigate(R.id.action_nav_pets_to_nav_login);
+            petViewModel.clearUID();
+            return false;
+        });
+
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     private void initUI() {
@@ -58,7 +93,9 @@ public class PetFragment extends Fragment {
         Gson gson = new Gson();
         binding.fabAddPet.setOnClickListener(v -> {
             PetFragmentDirections.ActionNavPetsToNavPetForm action =
-                    PetFragmentDirections.actionNavPetsToNavPetForm(gson.toJson(new Pet()), FormAction.CREATE);
+                    PetFragmentDirections.actionNavPetsToNavPetForm(
+                            gson.toJson(new Pet()), FormAction.CREATE
+                    );
             Navigation.findNavController(v).navigate(action);
         });
     }

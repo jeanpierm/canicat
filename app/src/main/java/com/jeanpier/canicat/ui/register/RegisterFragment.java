@@ -9,7 +9,6 @@ import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -23,10 +22,13 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jeanpier.canicat.R;
 import com.jeanpier.canicat.core.FieldValidators;
 import com.jeanpier.canicat.data.model.User;
 import com.jeanpier.canicat.data.network.UserService;
+import com.jeanpier.canicat.data.network.responses.ErrorResponse;
 import com.jeanpier.canicat.data.network.responses.PostUserResponse;
 import com.jeanpier.canicat.databinding.FragmentRegisterBinding;
 import com.jeanpier.canicat.ui.pets.viewmodels.PetViewModel;
@@ -34,6 +36,7 @@ import com.jeanpier.canicat.util.AlertUtil;
 import com.jeanpier.canicat.util.TextFieldUtil;
 import com.jeanpier.canicat.util.ToastUtil;
 
+import java.lang.reflect.Type;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -48,6 +51,7 @@ public class RegisterFragment extends Fragment {
     private static final String KEY_EMAIL = "email";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_PASSWORD2 = "password2";
+    private String firstname, lastname, dni, email, password, password2;
     private PetViewModel petViewModel;
     private FragmentRegisterBinding binding;
     private NavController navController;
@@ -58,6 +62,9 @@ public class RegisterFragment extends Fragment {
     private TextView textGoLogin;
     private ProgressBar progressBar;
     private final UserService userService = new UserService();
+    private final Gson gson = new Gson();
+    private final Type errorType = new TypeToken<ErrorResponse>() {
+    }.getType();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -70,12 +77,12 @@ public class RegisterFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            editDni.setText(savedInstanceState.getString(KEY_FIRSTNAME, ""));
-            editFirstname.setText(savedInstanceState.getString(KEY_LASTNAME, ""));
-            editLastname.setText(savedInstanceState.getString(KEY_DNI, ""));
-            editEmail.setText(savedInstanceState.getString(KEY_EMAIL, ""));
-            editPassword.setText(savedInstanceState.getString(KEY_PASSWORD, ""));
-            editPassword2.setText(savedInstanceState.getString(KEY_PASSWORD2, ""));
+            firstname = savedInstanceState.getString(KEY_FIRSTNAME, "");
+            lastname = savedInstanceState.getString(KEY_LASTNAME, "");
+            dni = savedInstanceState.getString(KEY_DNI, "");
+            email = savedInstanceState.getString(KEY_EMAIL, "");
+            password = savedInstanceState.getString(KEY_PASSWORD, "");
+            password2 = savedInstanceState.getString(KEY_PASSWORD2, "");
         }
     }
 
@@ -109,13 +116,19 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         navController = Navigation.findNavController(view);
         initUI();
     }
 
     private void initUI() {
         initViewModels();
+        bindViews();
+        buildGoToLoginTextSpan();
+        initListeners();
+        progressBar.setVisibility(View.GONE);
+    }
+
+    private void bindViews() {
         progressBar = binding.progressBar;
         editFirstname = binding.editFirstname;
         editLastname = binding.editLastname;
@@ -131,9 +144,13 @@ public class RegisterFragment extends Fragment {
         layoutPassword = binding.layoutPassword;
         layoutPassword2 = binding.layoutPassword2;
 
-        progressBar.setVisibility(View.GONE);
-        buildGoLoginTextSpan();
-        initListeners();
+        // saved state
+        editFirstname.setText(firstname);
+        editLastname.setText(lastname);
+        editDni.setText(dni);
+        editEmail.setText(email);
+        editPassword.setText(password);
+        editPassword2.setText(password2);
     }
 
     private void initViewModels() {
@@ -141,32 +158,31 @@ public class RegisterFragment extends Fragment {
     }
 
     private void initListeners() {
-        editFirstname.addTextChangedListener(new TextFieldValidation(editFirstname));
-        editLastname.addTextChangedListener(new TextFieldValidation(editLastname));
-        editEmail.addTextChangedListener(new TextFieldValidation(editEmail));
-        editDni.addTextChangedListener(new TextFieldValidation(editDni));
-        editPassword.addTextChangedListener(new TextFieldValidation(editPassword));
-        editPassword2.addTextChangedListener(new TextFieldValidation(editPassword2));
+//        listeners para validar los inputs
+        editFirstname.addTextChangedListener(new TextFieldValidator(editFirstname));
+        editLastname.addTextChangedListener(new TextFieldValidator(editLastname));
+        editEmail.addTextChangedListener(new TextFieldValidator(editEmail));
+        editDni.addTextChangedListener(new TextFieldValidator(editDni));
+        editPassword.addTextChangedListener(new TextFieldValidator(editPassword));
+        editPassword2.addTextChangedListener(new TextFieldValidator(editPassword2));
 
-        binding.buttonLogin.setOnClickListener(this::handleLoginClick);
-        binding.textGoLogin.setOnClickListener(v -> {
-            navController.navigate(R.id.action_nav_register_to_nav_login);
+        binding.buttonLogin.setOnClickListener(v -> {
+            if (!isFormValid()) {
+                AlertUtil.showErrorAlert(getString(R.string.alert_complete_fields),
+                        requireContext());
+                return;
+            }
+            postUser();
         });
+
+        binding.textGoLogin.setOnClickListener(v ->
+                navController.navigate(R.id.action_nav_register_to_nav_login));
     }
 
-    private void handleLoginClick(View view) {
-        if (!isFormValid()) {
-            AlertUtil.showErrorAlertDialog(getString(R.string.alert_complete_fields),
-                    getString(R.string.label_ok), requireContext());
-            return;
-        }
-        postUser();
-    }
-
-    private void navigateToLogin() {
+    private void navigateToPets() {
+//        asegura que el id del usuario esté en el estado
         if (petViewModel.getUID().getValue() == null) {
-            AlertUtil.showErrorAlertDialog(getString(R.string.login_error),
-                    getString(R.string.label_ok), requireContext());
+            AlertUtil.showErrorAlert(getString(R.string.login_error), requireContext());
             return;
         }
         navController.navigate(R.id.action_nav_register_to_nav_pets);
@@ -180,21 +196,28 @@ public class RegisterFragment extends Fragment {
             public void onResponse(@NonNull Call<PostUserResponse> call, @NonNull Response<PostUserResponse> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
-                    if (response.body() == null)
-                        throw new Error(getString(R.string.error_not_user_id));
+                    if (response.body() == null || response.body().getId() == null) {
+                        AlertUtil.showGenericErrorAlert(requireContext());
+                        return;
+                    }
                     String uid = response.body().getId();
                     petViewModel.setUID(uid);
                     ToastUtil.show(requireContext(), getString(R.string.login_successfull));
-                    navigateToLogin();
+                    navigateToPets();
                 } else {
-                    ToastUtil.show(requireContext(), getString(R.string.login_error));
+                    if (response.errorBody() == null) {
+                        AlertUtil.showErrorAlert(getString(R.string.login_error), requireContext());
+                        return;
+                    }
+                    ErrorResponse errorResponse = gson.fromJson(response.errorBody().charStream(), errorType);
+                    AlertUtil.showErrorAlert(errorResponse.getError(), requireContext());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<PostUserResponse> call, @NonNull Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                ToastUtil.show(requireContext(), getString(R.string.login_failed));
+                AlertUtil.showGenericErrorAlert(requireContext());
                 t.printStackTrace();
             }
         });
@@ -214,7 +237,7 @@ public class RegisterFragment extends Fragment {
                 && isValidPassword() && isValidConfirmPassword();
     }
 
-    private void buildGoLoginTextSpan() {
+    private void buildGoToLoginTextSpan() {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         // aplica estilo y texto al mensaje para ir a la pantalla registrar
         TextAppearanceSpan style = new TextAppearanceSpan(getContext(), R.style.BoldClickeable);
@@ -319,11 +342,11 @@ public class RegisterFragment extends Fragment {
         binding = null;
     }
 
-    class TextFieldValidation implements TextWatcher {
+    private class TextFieldValidator implements TextWatcher {
 
         private final View view;
 
-        public TextFieldValidation(View view) {
+        public TextFieldValidator(View view) {
             this.view = view;
         }
 
