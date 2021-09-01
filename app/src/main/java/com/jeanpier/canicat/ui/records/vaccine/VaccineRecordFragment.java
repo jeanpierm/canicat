@@ -18,17 +18,22 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.jeanpier.canicat.R;
+import com.jeanpier.canicat.core.FormAction;
+import com.jeanpier.canicat.data.model.Pet;
 import com.jeanpier.canicat.data.model.VaccineRecord;
 import com.jeanpier.canicat.databinding.FragmentPetListBinding;
 import com.jeanpier.canicat.databinding.FragmentVaccineRecordBinding;
 import com.jeanpier.canicat.databinding.FragmentVaccineRecordListBinding;
 import com.jeanpier.canicat.ui.pets.adapters.PetRecyclerViewAdapter;
 import com.jeanpier.canicat.ui.pets.fragments.PetFragment;
+import com.jeanpier.canicat.ui.pets.fragments.PetFragmentDirections;
 import com.jeanpier.canicat.ui.pets.viewmodels.PetViewModel;
 import com.jeanpier.canicat.ui.records.placeholder.PlaceholderContent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,11 +41,10 @@ import java.util.List;
  */
 public class VaccineRecordFragment extends Fragment {
 
-    private static final String TAG = PetFragment.class.getSimpleName();
+    private static final String TAG = VaccineRecordFragment.class.getSimpleName();
     private VaccineViewModel vaccineViewModel;
     private FragmentVaccineRecordListBinding binding;
     private NavController navController;
-    private final List<VaccineRecord> vaccines = new ArrayList<>();
     private VaccineRecordRecyclerViewAdapter adapter;
 
 
@@ -54,16 +58,36 @@ public class VaccineRecordFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        vaccineViewModel = new ViewModelProvider(requireActivity()).get(VaccineViewModel.class);
-        // actualiza las mascotas cada vez que se muestra el fragmento
-        navController = Navigation.findNavController(view);
         initUI();
     }
 
     private void initUI() {
-        vaccineViewModel.setUID("");
-        vaccineViewModel.getVaccines();
-        adapter = new VaccineRecordRecyclerViewAdapter(vaccines);
+        initViewModels();
+        vaccineViewModel.loadVaccines();
+        initRecyclerView();
+        initListeners();
+    }
+
+    private void initRecyclerView() {
+        adapter = new VaccineRecordRecyclerViewAdapter(Collections.emptyList());
+        binding.list.setAdapter(adapter);
+    }
+
+    private void initListeners() {
+
+    }
+
+    private void initViewModels() {
+        vaccineViewModel = new ViewModelProvider(requireActivity()).get(VaccineViewModel.class);
+        vaccineViewModel.getVaccines().observe(getViewLifecycleOwner(), vaccineRecordList ->{
+            adapter.setVaccines(vaccineRecordList);
+        } );
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
 

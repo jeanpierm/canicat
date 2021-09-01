@@ -18,25 +18,39 @@
         tools:text="1" />
 
     <TextView
-        android:id="@+id/content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/vaccinename"
+        android:layout_width="138dp"
+        android:layout_height="32dp"
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="13dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button_edit"
+        app:layout_constraintEnd_toStartOf="@+id/vaccine_nextdate"
         app:layout_constraintStart_toEndOf="@id/item_number"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Soy un registro de vacuna :D" />
+        tools:text="Parvovirus" />
+
+    <TextView
+        android:id="@+id/vaccine_nextdate"
+        android:layout_width="130dp"
+        android:layout_height="49dp"
+        android:layout_margin="@dimen/text_margin"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="13dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_delete"
+        app:layout_constraintStart_toEndOf="@id/vaccinename"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Siguiente dosis: 24-03-2021" />
 
     <Button
-        android:id="@+id/button_edit"
+        android:id="@+id/button_delete"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:textAppearance="?attr/textAppearanceListItem"
-        app:icon="@android:drawable/ic_menu_edit"
+        app:icon="@android:drawable/ic_menu_delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -21,4 +21,8 @@ public class VaccineRecordService {
         return retrofit.create(DataApi.class).getVaccineByPetId(petId);
     }
 
+    public Call<Void> deleteVaccine(String vaccineId){
+        return retrofit.create(DataApi.class).deleteVaccine(vaccineId);
+    }
+
 }

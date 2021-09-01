@@ -1,6 +1,5 @@
 package com.jeanpier.canicat.ui.pets.fragments;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,16 +19,13 @@ import com.jeanpier.canicat.databinding.FragmentPetListBinding;
 import com.jeanpier.canicat.ui.pets.adapters.PetRecyclerViewAdapter;
 import com.jeanpier.canicat.ui.pets.viewmodels.PetViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 public class PetFragment extends Fragment {
-    private static final String TAG = PetFragment.class.getSimpleName();
 
+    private static final String TAG = PetFragment.class.getSimpleName();
     private PetViewModel petViewModel;
     private FragmentPetListBinding binding;
-    private NavController navController;
-    private final List<Pet> pets = new ArrayList<>();
     private PetRecyclerViewAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -41,19 +37,21 @@ public class PetFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
-        // actualiza las mascotas cada vez que se muestra el fragmento
-        navController = Navigation.findNavController(view);
         initUI();
     }
 
     private void initUI() {
-        petViewModel.setUID("8677212f-7e97-458a-b89e-3c05fbfc0efd");
+        initViewModels();
+//        vuelve a cargar las mascotas cada vez que se muestra el fragmento,
+//        para así actualizar la lista después de añadir/editar/eliminar
         petViewModel.loadPets();
-        adapter = new PetRecyclerViewAdapter(pets);
-        binding.recyclerPets.setAdapter(adapter);
+        initRecyclerView();
         initListeners();
-        initObservers();
+    }
+
+    private void initRecyclerView() {
+        adapter = new PetRecyclerViewAdapter(Collections.emptyList());
+        binding.recyclerPets.setAdapter(adapter);
     }
 
     private void initListeners() {
@@ -65,15 +63,13 @@ public class PetFragment extends Fragment {
         });
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private void initObservers() {
+    private void initViewModels() {
+        petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
         petViewModel.getPets().observe(getViewLifecycleOwner(), petList -> {
-            pets.clear();
-            pets.addAll(petList);
-            adapter.notifyDataSetChanged();
+            adapter.setPets(petList);
         });
         petViewModel.isLoading().observe(getViewLifecycleOwner(), integer -> {
-            binding.progressIndicator.setVisibility(integer);
+            binding.progressBar.setVisibility(integer);
         });
     }
 

@@ -26,6 +26,7 @@ import com.jeanpier.canicat.data.model.VaccineRecord;
 import com.jeanpier.canicat.data.network.DataApi;
 import com.jeanpier.canicat.data.network.VaccineRecordService;
 import com.jeanpier.canicat.databinding.FragmentVaccineFormBinding;
+import com.jeanpier.canicat.util.ToastUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -109,7 +110,7 @@ public class VaccineFormFragment extends Fragment {
 
     private void onSubmit(View view) {
         if(!isValidForm()){
-            Toast.makeText(getContext(), "Por favor, llene todos los campos", Toast.LENGTH_LONG);
+            ToastUtil.show(getContext(), "Por favor, llene todos los campos");
             Log.d(TAG, "FALTAN DATOS" );
             return;
         }
@@ -127,23 +128,25 @@ public class VaccineFormFragment extends Fragment {
             @Override
             public void onResponse(Call<VaccineRecord> call, Response<VaccineRecord> response) {
                 if(!response.isSuccessful()){
-                    Toast.makeText(getContext(), "Error al guardar vacuna" + response.code(), Toast.LENGTH_LONG);
-                    Log.d(TAG, "onResponse: Ha ocurrido un error" + response.code() + response.errorBody());
+
+                    ToastUtil.show(getContext(), getContext().getString(R.string.save_vaccine_error));
                 }else{
-                    Toast.makeText(getContext(), "Registro guardado con exito", Toast.LENGTH_LONG);
+                    ToastUtil.show(getContext(), getContext().getString(R.string.save_vaccine_success));
                     binding.vaccineName.setText("");
                     binding.vaccineType.setText("");
-                    binding.description.setText("");
+                    binding.vaccineDescription.setText("");
                     binding.textDateNext.setText("");
                     binding.textDateNext.setText("");
                     lastDate = "";
                     nextDate = "";
+                    binding.textDateNext.setText("");
+                    binding.textDate.setText("");
                 }
             }
 
             @Override
             public void onFailure(Call<VaccineRecord> call, Throwable t) {
-                Toast.makeText(getContext(), "Error!" + t.getMessage(), Toast.LENGTH_LONG);
+                ToastUtil.show(getContext(), getContext().getString(R.string.save_vaccine_fail));
                 Log.d(TAG, "onResponse: error" + t.getMessage());
             }
         });
@@ -169,7 +172,7 @@ public class VaccineFormFragment extends Fragment {
     private void initListeners() {
         binding.guardar.setOnClickListener(v -> {
             onSubmit(v);
-            navController.navigate(R.id.action_nav_vaccine_form_to_nav_records);
+            //navController.navigate(R.id.action_nav_vaccine_form_to_nav_records);
         });
     }
 
@@ -199,5 +202,4 @@ public class VaccineFormFragment extends Fragment {
 
         return true;
     }
-
 }

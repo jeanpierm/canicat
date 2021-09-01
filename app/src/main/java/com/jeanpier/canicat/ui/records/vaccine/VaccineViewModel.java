@@ -40,11 +40,11 @@ public class VaccineViewModel extends AndroidViewModel {
         return vaccines;
     }
 
-    private void loadVaccines() {
+    public void loadVaccines(){
         loading.postValue(View.VISIBLE);
         String petId = uid.getValue();
 
-        Call<List<VaccineRecord>> call = vaccineRecordService.getVaccineByPetId(petId);
+        Call<List<VaccineRecord>> call = vaccineRecordService.getVaccineByPetId("f8b2762e-624d-4275-abf4-88d9a5a6dac6");
         call.enqueue(new Callback<List<VaccineRecord>>() {
             @Override
             public void onResponse(Call<List<VaccineRecord>> call, Response<List<VaccineRecord>> response) {
@@ -56,14 +56,14 @@ public class VaccineViewModel extends AndroidViewModel {
                     Log.d(TAG, "onResponse: Vaccines cargados con éxito: " + petVaccines.size());
                     vaccines.postValue(petVaccines);
                 }else{
-                    ToastUtil.show(getApplication(), getApplication().getString(R.string.get_pets_error));
+                    ToastUtil.show(getApplication(), getApplication().getString(R.string.get_vaccines_error));
                     Log.d(TAG, "onResponse: Ha ocurrido un error");
                 }
             }
 
             @Override
             public void onFailure(Call<List<VaccineRecord>> call, Throwable t) {
-                ToastUtil.show(getApplication(), getApplication().getString(R.string.get_pets_failed));
+                ToastUtil.show(getApplication(), getApplication().getString(R.string.get_vaccines_fail));
                 Log.d(TAG, "onFailure: " + t.getMessage());
                 t.printStackTrace();
             }

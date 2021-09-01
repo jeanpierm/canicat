@@ -4,11 +4,11 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
-public class PostPetResponse {
+public class PostUserResponse {
     @SerializedName("id")
     private String id;
 
-    public PostPetResponse(String id) {
+    public PostUserResponse(String id) {
         this.id = id;
     }
 
@@ -23,7 +23,7 @@ public class PostPetResponse {
     @NonNull
     @Override
     public String toString() {
-        return "PostPetResponse{" +
+        return "SuccessPostPet{" +
                 "id='" + id + '\'' +
                 '}';
     }

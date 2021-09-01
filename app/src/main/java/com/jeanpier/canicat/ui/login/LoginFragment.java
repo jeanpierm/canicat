@@ -67,7 +67,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void initListeners() {
-        binding.buttonLoginExample.setOnClickListener(v -> {
+        binding.buttonLogin.setOnClickListener(v -> {
             navController.navigate(R.id.action_nav_login_to_nav_pets);
         });
         binding.textGoRegister.setOnClickListener(v -> {

@@ -60,20 +60,21 @@ public class PetViewModel extends AndroidViewModel {
         call.enqueue(new Callback<List<Pet>>() {
             @Override
             public void onResponse(@NonNull Call<List<Pet>> call, @NonNull Response<List<Pet>> response) {
+                loading.postValue(View.GONE);
                 if (response.isSuccessful()) {
-                    loading.postValue(View.GONE);
                     List<Pet> userPets = response.body() != null ?
                             response.body() : Collections.emptyList();
                     Log.d(TAG, "onResponse: Pets cargados con éxito: " + userPets.size());
                     pets.postValue(userPets);
                 } else {
                     ToastUtil.show(getApplication(), getApplication().getString(R.string.get_pets_error));
-                    Log.d(TAG, "onResponse: Ha ocurrido un error");
+                    Log.d(TAG, "onResponse: Ha ocurrido un error" + response.errorBody());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Pet>> call, @NonNull Throwable t) {
+                loading.postValue(View.GONE);
                 ToastUtil.show(getApplication(), getApplication().getString(R.string.get_pets_failed));
                 Log.d(TAG, "onFailure: " + t.getMessage());
                 t.printStackTrace();

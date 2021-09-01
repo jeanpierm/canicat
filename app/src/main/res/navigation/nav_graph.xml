@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/nav_vaccine_form">
+    app:startDestination="@id/nav_records">
 
     <fragment
         android:id="@+id/nav_pets"
@@ -29,8 +29,8 @@
     <fragment
         android:id="@+id/nav_pet_form"
         android:name="com.jeanpier.canicat.ui.pets.fragments.PetFormFragment"
-        android:label="Registro de mascota"
-        tools:layout="@layout/fragment_pet_form" >
+        android:label="Nueva mascota"
+        tools:layout="@layout/fragment_pet_form">
         <action
             android:id="@+id/action_nav_pet_form_to_nav_pets"
             app:destination="@id/nav_pets" />
@@ -53,6 +53,9 @@
         <action
             android:id="@+id/action_nav_register_to_nav_login"
             app:destination="@id/nav_login" />
+        <action
+            android:id="@+id/action_nav_register_to_nav_pets"
+            app:destination="@id/nav_pets" />
     </fragment>
     <fragment
         android:id="@+id/nav_search_canicat"
@@ -66,6 +69,9 @@
         tools:layout="@layout/fragment_records" >
         <action
             android:id="@+id/action_nav_records_to_nav_vaccine_form"
+            app:destination="@id/nav_vaccine_form" />
+        <action
+            android:id="@+id/action_nav_records_to_nav_vaccine_form_edit"
             app:destination="@id/nav_vaccine_form" />
     </fragment>
     <fragment
