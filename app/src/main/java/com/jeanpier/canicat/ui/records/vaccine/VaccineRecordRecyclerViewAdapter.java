@@ -21,6 +21,7 @@ import com.jeanpier.canicat.data.model.VaccineRecord;
 import com.jeanpier.canicat.data.network.VaccineRecordService;
 import com.jeanpier.canicat.databinding.FragmentVaccineFormBinding;
 import com.jeanpier.canicat.databinding.FragmentVaccineRecordBinding;
+<<<<<<< HEAD
 import com.jeanpier.canicat.databinding.FragmentVaccineRecordListBinding;
 import com.jeanpier.canicat.databinding.PetItemBinding;
 import com.jeanpier.canicat.ui.pets.adapters.PetRecyclerViewAdapter;
@@ -36,9 +37,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+=======
+
+import java.util.List;
+
+>>>>>>> 3df78eea588f765df674105dfc4178a40b6945ae
 public class VaccineRecordRecyclerViewAdapter extends RecyclerView.Adapter<VaccineRecordRecyclerViewAdapter.ViewHolder> {
 
     private NavController navController;
+<<<<<<< HEAD
     private static final String TAG = VaccineRecordRecyclerViewAdapter.class.getSimpleName();
     private List<VaccineRecord> vaccines;
     private VaccineRecordService vaccineRecordService;
@@ -52,6 +59,8 @@ public class VaccineRecordRecyclerViewAdapter extends RecyclerView.Adapter<Vacci
         this.vaccines = vaccines;
         notifyDataSetChanged();
     }
+=======
+>>>>>>> 3df78eea588f765df674105dfc4178a40b6945ae
 
 
     @NonNull
@@ -63,6 +72,7 @@ public class VaccineRecordRecyclerViewAdapter extends RecyclerView.Adapter<Vacci
     }
 
     @Override
+<<<<<<< HEAD
     public void onBindViewHolder(@NonNull VaccineRecordRecyclerViewAdapter.ViewHolder holder, int position) {
         VaccineRecord currentVaccine = vaccines.get(position);
         holder.binding.vaccinename.setText(currentVaccine.getName());
@@ -91,6 +101,9 @@ public class VaccineRecordRecyclerViewAdapter extends RecyclerView.Adapter<Vacci
                 }
                 Log.d(TAG, "onResponse: " + response.toString());
             }
+=======
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+>>>>>>> 3df78eea588f765df674105dfc4178a40b6945ae
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
@@ -102,12 +115,22 @@ public class VaccineRecordRecyclerViewAdapter extends RecyclerView.Adapter<Vacci
 
     @Override
     public int getItemCount() {
+<<<<<<< HEAD
         return vaccines.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final FragmentVaccineRecordBinding binding;
+=======
+        return 0;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public final TextView mIdView;
+        public final TextView mContentView;
+        public final Button buttonEdit;
+>>>>>>> 3df78eea588f765df674105dfc4178a40b6945ae
 
         public ViewHolder(FragmentVaccineRecordBinding binding) {
             super(binding.getRoot());

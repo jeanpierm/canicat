@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.jeanpier.canicat.R;
+<<<<<<< HEAD
 import com.jeanpier.canicat.core.FormAction;
 import com.jeanpier.canicat.data.model.Pet;
 import com.jeanpier.canicat.data.model.VaccineRecord;
@@ -31,6 +32,8 @@ import com.jeanpier.canicat.ui.pets.fragments.PetFragment;
 import com.jeanpier.canicat.ui.pets.fragments.PetFragmentDirections;
 import com.jeanpier.canicat.ui.pets.viewmodels.PetViewModel;
 import com.jeanpier.canicat.ui.records.placeholder.PlaceholderContent;
+=======
+>>>>>>> 3df78eea588f765df674105dfc4178a40b6945ae
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -85,9 +88,15 @@ public class VaccineRecordFragment extends Fragment {
     }
 
     @Override
+<<<<<<< HEAD
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+=======
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_vaccine_record_list, container, false);
+>>>>>>> 3df78eea588f765df674105dfc4178a40b6945ae
     }
 
 

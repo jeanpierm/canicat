@@ -8,6 +8,7 @@ public class Routes {
     public static final String PETS_PATH = "/pets";
     public static final String USERS_PATH = "/users";
     public static final String VACCINE_PATH = "/vaccines";
+    public static final String LOGIN_PATH = "/auth/login";
     public static final String BASE_URI = "http://" + IP_LOCAL + ":" + PORT;
     public static final String API_URI = BASE_URI + "/api/";
 }

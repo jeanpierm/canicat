@@ -3,7 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
+<<<<<<< HEAD
     app:startDestination="@id/nav_records">
+=======
+    app:startDestination="@id/nav_login">
+>>>>>>> 3df78eea588f765df674105dfc4178a40b6945ae
 
     <fragment
         android:id="@+id/nav_pets"
@@ -13,6 +17,9 @@
         <action
             android:id="@+id/action_nav_pets_to_nav_pet_form"
             app:destination="@id/nav_pet_form" />
+        <action
+            android:id="@+id/action_nav_pets_to_nav_login"
+            app:destination="@id/nav_login" />
     </fragment>
     <fragment
         android:id="@+id/nav_login"
@@ -61,7 +68,11 @@
         android:id="@+id/nav_search_canicat"
         android:name="com.jeanpier.canicat.ui.google_maps.SearchCanicatFragment"
         android:label="@string/menu_search_canicat"
-        tools:layout="@layout/fragment_search_canicat" />
+        tools:layout="@layout/fragment_search_canicat" >
+        <action
+            android:id="@+id/action_nav_search_canicat_to_nav_pets"
+            app:destination="@id/nav_pets" />
+    </fragment>
     <fragment
         android:id="@+id/nav_records"
         android:name="com.jeanpier.canicat.ui.records.RecordsFragment"
@@ -73,24 +84,6 @@
         <action
             android:id="@+id/action_nav_records_to_nav_vaccine_form_edit"
             app:destination="@id/nav_vaccine_form" />
-    </fragment>
-    <fragment
-        android:id="@+id/nav_disease_form"
-        android:name="com.jeanpier.canicat.ui.records.disease.DiseaseFormFragment"
-        android:label="fragment_disease_form"
-        tools:layout="@layout/fragment_disease_form" >
-        <action
-            android:id="@+id/action_nav_disease_form_to_nav_records"
-            app:destination="@id/nav_records" />
-    </fragment>
-    <fragment
-        android:id="@+id/nav_treatment_form"
-        android:name="com.jeanpier.canicat.ui.records.treatment.TreatmentFormFragment"
-        android:label="fragment_treatment_form"
-        tools:layout="@layout/fragment_treatment_form" >
-        <action
-            android:id="@+id/action_nav_treatment_form_to_nav_records"
-            app:destination="@id/nav_records" />
     </fragment>
     <fragment
         android:id="@+id/nav_vaccine_form"

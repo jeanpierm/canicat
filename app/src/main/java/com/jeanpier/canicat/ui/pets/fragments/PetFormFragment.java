@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -32,14 +33,15 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jeanpier.canicat.R;
 import com.jeanpier.canicat.config.Routes;
 import com.jeanpier.canicat.core.FormAction;
 import com.jeanpier.canicat.data.model.Pet;
 import com.jeanpier.canicat.data.network.PetService;
+import com.jeanpier.canicat.data.network.responses.ErrorResponse;
 import com.jeanpier.canicat.data.network.responses.PostPetResponse;
 import com.jeanpier.canicat.databinding.FragmentPetFormBinding;
-import com.jeanpier.canicat.ui.pets.viewmodels.PetFormViewModel;
 import com.jeanpier.canicat.ui.pets.viewmodels.PetViewModel;
 import com.jeanpier.canicat.util.AlertUtil;
 import com.jeanpier.canicat.util.KeyboardUtil;
@@ -48,6 +50,7 @@ import com.jeanpier.canicat.util.TextFieldUtil;
 import com.jeanpier.canicat.util.ToastUtil;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -63,7 +66,6 @@ public class PetFormFragment extends Fragment {
     private NavController navController;
     private FragmentPetFormBinding binding;
     private Bitmap pictureBitmap;
-    private PetFormViewModel petFormViewModel;
     private Pet pet;
     private FormAction formAction;
     private TextInputEditText editName, editSpecies, editBreed;
@@ -72,9 +74,12 @@ public class PetFormFragment extends Fragment {
     private FloatingActionButton fabPicture;
     private CircleImageView circlePicture;
     private PetViewModel petViewModel;
-    MenuItem menuSave;
-    MenuItem menuEdit;
-    MenuItem menuDelete;
+    private MenuItem menuSave;
+    private MenuItem menuEdit;
+    private MenuItem menuDelete;
+    private final Gson gson = new Gson();
+    private final Type errorType = new TypeToken<ErrorResponse>() {
+    }.getType();
     private final ActivityResultLauncher<String> fileChooserContract =
             registerForActivityResult(new ActivityResultContracts.GetContent(),
                     uri -> {
@@ -129,8 +134,8 @@ public class PetFormFragment extends Fragment {
 
         menuSave.setOnMenuItemClickListener(item -> {
             if (!isFormValid()) {
-                AlertUtil.showErrorAlertDialog(getString(R.string.alert_complete_fields),
-                        getString(R.string.label_ok), requireContext());
+                AlertUtil.showErrorAlert(getString(R.string.alert_complete_fields),
+                        requireContext());
                 return false;
             }
             KeyboardUtil.hideKeyboard(requireActivity());
@@ -196,7 +201,12 @@ public class PetFormFragment extends Fragment {
                     pet.setId(petId);
                     ToastUtil.show(requireContext(), getString(R.string.pet_created_successfull));
                 } else {
-                    ToastUtil.show(requireContext(), getString(R.string.pet_created_error));
+                    if (response.errorBody() == null) {
+                        AlertUtil.showErrorAlert(getString(R.string.pet_created_error), requireContext());
+                        return;
+                    }
+                    ErrorResponse errorResponse = gson.fromJson(response.errorBody().charStream(), errorType);
+                    AlertUtil.showErrorAlert(errorResponse.getError(), requireContext());
                 }
                 Log.d(TAG, "onResponse: " + response.toString() + "ID: " + response.body());
             }
@@ -204,7 +214,7 @@ public class PetFormFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<PostPetResponse> call, @NonNull Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                ToastUtil.show(requireContext(), getString(R.string.pet_created_failed));
+                AlertUtil.showGenericErrorAlert(requireContext());
                 Log.d(TAG, "onFailure: " + t.getMessage());
                 t.printStackTrace();
             }
@@ -220,11 +230,17 @@ public class PetFormFragment extends Fragment {
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
-//                    se actualiza localmente el nombre de la mascota para la alerta de "borrar"
+//                    se actualiza localmente el nombre de la mascota para la alerta de "borrar",
+//                    alerta la cual muestra el nombre d ela mascota
                     pet.setName(newPet.getName());
                     ToastUtil.show(requireContext(), getString(R.string.pet_updated_successfull));
                 } else {
-                    ToastUtil.show(requireContext(), getString(R.string.pet_updated_error));
+                    if (response.errorBody() == null) {
+                        AlertUtil.showErrorAlert(getString(R.string.pet_updated_error), requireContext());
+                        return;
+                    }
+                    ErrorResponse errorResponse = gson.fromJson(response.errorBody().charStream(), errorType);
+                    AlertUtil.showErrorAlert(errorResponse.getError(), requireContext());
                 }
                 Log.d(TAG, "onResponse: " + response.toString());
             }
@@ -232,7 +248,7 @@ public class PetFormFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                ToastUtil.show(requireContext(), getString(R.string.pet_updated_failed));
+                AlertUtil.showGenericErrorAlert(requireContext());
                 Log.d(TAG, "onFailure: " + t.getMessage());
                 t.printStackTrace();
             }
@@ -250,8 +266,12 @@ public class PetFormFragment extends Fragment {
                     ToastUtil.show(requireContext(), getString(R.string.pet_deleted_succesfull));
                     navController.navigate(PetFormFragmentDirections.actionNavPetFormToNavPets());
                 } else {
-                    ToastUtil.show(requireContext(), getString(R.string.pet_deleted_error));
-                    Log.d(TAG, "onResponse: " + response.errorBody());
+                    if (response.errorBody() == null) {
+                        AlertUtil.showErrorAlert(getString(R.string.pet_deleted_error), requireContext());
+                        return;
+                    }
+                    ErrorResponse errorResponse = gson.fromJson(response.errorBody().charStream(), errorType);
+                    AlertUtil.showErrorAlert(errorResponse.getError(), requireContext());
                 }
                 Log.d(TAG, "onResponse: " + response.toString());
             }
@@ -259,7 +279,7 @@ public class PetFormFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                ToastUtil.show(requireContext(), getString(R.string.pet_deleted_failed));
+                AlertUtil.showGenericErrorAlert(requireContext());
                 Log.d(TAG, "onFailure: " + t.getMessage());
                 t.printStackTrace();
             }
@@ -286,7 +306,6 @@ public class PetFormFragment extends Fragment {
     }
 
     private void initViewModels() {
-        petFormViewModel = new ViewModelProvider(this).get(PetFormViewModel.class);
         petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
         petViewModel.getUID().observe(getViewLifecycleOwner(), s -> uid = s);
     }

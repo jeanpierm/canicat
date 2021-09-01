@@ -2,8 +2,8 @@
     <string name="app_name">Canicat</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">CANICAT</string>
+    <string name="nav_header_subtitle">Grupo #4</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -69,9 +69,14 @@
     <string name="login_successfull">Inicio de sesión exitoso</string>
     <string name="login_error">Ocurrió un error al intentar iniciar sesión</string>
     <string name="login_failed">Ocurrió un fallo al intentar iniciar sesión</string>
+<<<<<<< HEAD
     <string name="get_vaccines_error">Ocurrió un error al intentar obtener las vacunas :(</string>
     <string name="get_vaccines_fail">Error al intentar obtener las vacunas :(</string>
     <string name="save_vaccine_success">Vacuna guardada con exito</string>
     <string name="save_vaccine_error">Ha ocurrido un error, los datos no se han guardado</string>
     <string name="save_vaccine_fail">Error al guardas los datos</string>
+=======
+    <string name="error_contact_it">Ha ocurrido un error. Favor, ponerse en contacto con el departamento de sistemas</string>
+    <string name="title_menu_logout">Cerrar sesión</string>
+>>>>>>> 3df78eea588f765df674105dfc4178a40b6945ae
 </resources>
