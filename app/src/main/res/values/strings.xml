@@ -76,5 +76,8 @@
     <string name="save_vaccine_fail">Error al guardas los datos</string>
     <string name="error_contact_it">Ha ocurrido un error. Favor, ponerse en contacto con el departamento de sistemas</string>
     <string name="title_menu_logout">Cerrar sesión</string>
+    <string name="pet_not_loaded">Disculpa, no se ha podido leer correctamente la mascota. Vuelve a intentarlo más tarde.</string>
+    <string name="vaccine_deleted_error">Ocurrió un erro al intentar eliminar la vacuna :(</string>
+    <string name="vaccine_deleted_successful">Vacuna eliminada correctamente</string>
 
 </resources>

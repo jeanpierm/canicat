@@ -33,7 +33,6 @@ public class RecordsFragment extends Fragment {
 
     private void initUI() {
         initListeners();
-        initObservers();
     }
 
     private void initListeners() {
@@ -43,16 +42,12 @@ public class RecordsFragment extends Fragment {
 
     }
 
-    private void initObservers() {
-
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         viewPager = binding.pager;
         recordsAdapter = new RecordsAdapter(this);
         viewPager.setAdapter(recordsAdapter);
-        String[] titles = {"Vacunas", "Enfermedades", "Tratamientos"};
+        String[] titles = getResources().getStringArray(R.array.records);
         new TabLayoutMediator(binding.tabLayaout, viewPager,
                 (tab, position) -> tab.setText(titles[position])
         ).attach();

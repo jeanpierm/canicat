@@ -9,7 +9,7 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".ui.records.vaccine.VaccineRecordFragment"
+    tools:context=".ui.records.vaccine.fragments.VaccineFragment"
     tools:listitem="@layout/fragment_vaccine_record"
 
     app:layout_constraintHorizontal_bias="0.088"

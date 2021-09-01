@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_medical_services"
+        android:id="@+id/menu_vaccines"
         android:icon="@drawable/ic_menu_medical_services"
         android:title="@string/title_menu_medical_services"
         app:showAsAction="always" />

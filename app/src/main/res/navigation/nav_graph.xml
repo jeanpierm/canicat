@@ -3,11 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-<<<<<<< HEAD
-    app:startDestination="@id/nav_records">
-=======
     app:startDestination="@id/nav_login">
->>>>>>> 3df78eea588f765df674105dfc4178a40b6945ae
 
     <fragment
         android:id="@+id/nav_pets"
@@ -87,9 +83,9 @@
     </fragment>
     <fragment
         android:id="@+id/nav_vaccine_form"
-        android:name="com.jeanpier.canicat.ui.records.vaccine.VaccineFormFragment"
-        android:label="fragment_vaccine_form"
-        tools:layout="@layout/fragment_vaccine_form" >
+        android:name="com.jeanpier.canicat.ui.records.vaccine.fragments.VaccineFormFragment"
+        android:label="Crear vacuna"
+        tools:layout="@layout/fragment_vaccine_form">
         <action
             android:id="@+id/action_nav_vaccine_form_to_nav_records"
             app:destination="@id/nav_records" />

@@ -2,7 +2,7 @@ package com.jeanpier.canicat.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class VaccineRecord {
+public class Vaccine {
     @SerializedName("id")
     private String id;
     @SerializedName("name")
@@ -18,11 +18,11 @@ public class VaccineRecord {
     @SerializedName("petId")
     private String petId;
 
-    public VaccineRecord(){
+    public Vaccine(){
 
     }
 
-    public VaccineRecord(String name, String type, String lastVaccineDate, String nextVaccineDate, String description, String petId) {
+    public Vaccine(String name, String type, String lastVaccineDate, String nextVaccineDate, String description, String petId) {
         this.name = name;
         this.type = type;
         this.lastVaccineDate = lastVaccineDate;

@@ -4,4 +4,8 @@
         <item>Femenino</item>
         <item>Masculino</item>
     </string-array>
+
+    <string-array name="records">
+        <item>Vaccines</item>
+    </string-array>
 </resources>

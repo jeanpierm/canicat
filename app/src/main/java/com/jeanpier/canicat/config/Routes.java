@@ -2,7 +2,7 @@ package com.jeanpier.canicat.config;
 
 public class Routes {
     // Para ver tu ip local ejecuta el comando "ipconfig" en cmd/powershell. (IPv4)
-    private static final String IP_LOCAL = "192.168.1.36";
+    private static final String IP_LOCAL = "192.168.100.195";
     private static final String PORT = "3000";
     public static final String API_APTH = "/api";
     public static final String PETS_PATH = "/pets";

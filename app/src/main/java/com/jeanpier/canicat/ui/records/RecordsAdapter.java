@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.jeanpier.canicat.ui.records.vaccine.VaccineRecordFragment;
+import com.jeanpier.canicat.ui.records.vaccine.fragments.VaccineFragment;
 
 public class RecordsAdapter extends FragmentStateAdapter {
 
@@ -18,7 +18,7 @@ public class RecordsAdapter extends FragmentStateAdapter {
         Fragment fragment = new Fragment();
         switch (position) {
             case 0:
-                fragment = new VaccineRecordFragment();
+                fragment = new VaccineFragment();
                 break;
         }
         return fragment;
@@ -26,6 +26,6 @@ public class RecordsAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 1;
     }
 }

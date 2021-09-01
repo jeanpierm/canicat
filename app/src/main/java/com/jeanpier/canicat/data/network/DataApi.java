@@ -3,13 +3,12 @@ package com.jeanpier.canicat.data.network;
 import com.jeanpier.canicat.config.Routes;
 import com.jeanpier.canicat.data.model.Pet;
 
-import com.jeanpier.canicat.data.model.VaccineRecord;
+import com.jeanpier.canicat.data.model.Vaccine;
 
 import com.jeanpier.canicat.data.model.User;
 import com.jeanpier.canicat.data.network.responses.LoginResponse;
 
 import com.jeanpier.canicat.data.network.responses.PostPetResponse;
-import com.jeanpier.canicat.data.model.User;
 import com.jeanpier.canicat.data.network.responses.PostUserResponse;
 
 import java.util.List;
@@ -48,10 +47,10 @@ public interface DataApi {
     //vaccine routes
 
     @POST(Routes.API_APTH  + Routes.VACCINE_PATH)
-    Call<VaccineRecord> saveVaccineRecord(@Body VaccineRecord vaccineRecord);
+    Call<Vaccine> saveVaccineRecord(@Body Vaccine vaccine);
 
     @GET(Routes.API_APTH + Routes.PETS_PATH+ "/{petId}"+ Routes.VACCINE_PATH)
-    Call<List<VaccineRecord>> getVaccineByPetId(@Path("petId") String petId);
+    Call<List<Vaccine>> getVaccineByPetId(@Path("petId") String petId);
 
     @DELETE(Routes.API_APTH + Routes.VACCINE_PATH + "/{vaccineId}")
     Call<Void> deleteVaccine(@Path("vaccineId") String id);

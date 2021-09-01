@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -43,6 +41,7 @@ import com.jeanpier.canicat.data.network.responses.ErrorResponse;
 import com.jeanpier.canicat.data.network.responses.PostPetResponse;
 import com.jeanpier.canicat.databinding.FragmentPetFormBinding;
 import com.jeanpier.canicat.ui.pets.viewmodels.PetViewModel;
+import com.jeanpier.canicat.ui.records.vaccine.viewmodels.VaccineViewModel;
 import com.jeanpier.canicat.util.AlertUtil;
 import com.jeanpier.canicat.util.KeyboardUtil;
 import com.jeanpier.canicat.util.ParseUtil;
@@ -74,9 +73,8 @@ public class PetFormFragment extends Fragment {
     private FloatingActionButton fabPicture;
     private CircleImageView circlePicture;
     private PetViewModel petViewModel;
-    private MenuItem menuSave;
-    private MenuItem menuEdit;
-    private MenuItem menuDelete;
+    private VaccineViewModel vaccineViewModel;
+    private MenuItem menuSave, menuEdit, menuDelete, menuVaccines;
     private final Gson gson = new Gson();
     private final Type errorType = new TypeToken<ErrorResponse>() {
     }.getType();
@@ -116,6 +114,7 @@ public class PetFormFragment extends Fragment {
         menuSave = menu.findItem(R.id.menu_save);
         menuEdit = menu.findItem(R.id.menu_edit);
         menuDelete = menu.findItem(R.id.menu_delete);
+        menuVaccines = menu.findItem(R.id.menu_vaccines);
 
         if (formAction == FormAction.EDIT) {
             readMode();
@@ -133,7 +132,7 @@ public class PetFormFragment extends Fragment {
         });
 
         menuSave.setOnMenuItemClickListener(item -> {
-            if (!isFormValid()) {
+            if (!isValidForm()) {
                 AlertUtil.showErrorAlert(getString(R.string.alert_complete_fields),
                         requireContext());
                 return false;
@@ -162,10 +161,34 @@ public class PetFormFragment extends Fragment {
             return false;
         });
 
+        menuVaccines.setOnMenuItemClickListener(item -> {
+            if (pet.getId() == null) {
+                AlertUtil.showErrorAlert(getString(R.string.pet_not_loaded), requireContext());
+                return false;
+            }
+//            set el petId en el viewmodel para poderlo usar el VaccineFragment y VaccineFormFragment
+            vaccineViewModel.setPetId(pet.getId());
+//            navegación a las vacunas
+            navController.navigate(R.id.action_nav_pet_form_to_nav_records);
+            return false;
+        });
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     private void initUI() {
+        bindViews();
+        progressBar.setVisibility(View.GONE);
+        setFormActionFromArgs();
+        setPetFromArgs();
+        if (formAction == FormAction.EDIT) fillFormFields();
+        setActionBarTitle();
+        loadDropdownOptions();
+        initListeners();
+        initViewModels();
+    }
+
+    private void bindViews() {
         editName = binding.editName;
         editSpecies = binding.editSpecies;
         editBreed = binding.editBreed;
@@ -173,17 +196,6 @@ public class PetFormFragment extends Fragment {
         progressBar = binding.progressBar;
         fabPicture = binding.fabPicture;
         circlePicture = binding.circlePicture;
-
-        progressBar.setVisibility(View.GONE);
-        setFormActionFromArgs();
-        setPetFromArgs();
-        if (formAction == FormAction.EDIT) {
-            fillFormFields();
-        }
-        setActionBarTitle();
-        loadDropdownOptions();
-        initListeners();
-        initViewModels();
     }
 
     private void postPet() {
@@ -208,14 +220,12 @@ public class PetFormFragment extends Fragment {
                     ErrorResponse errorResponse = gson.fromJson(response.errorBody().charStream(), errorType);
                     AlertUtil.showErrorAlert(errorResponse.getError(), requireContext());
                 }
-                Log.d(TAG, "onResponse: " + response.toString() + "ID: " + response.body());
             }
 
             @Override
             public void onFailure(@NonNull Call<PostPetResponse> call, @NonNull Throwable t) {
                 progressBar.setVisibility(View.GONE);
                 AlertUtil.showGenericErrorAlert(requireContext());
-                Log.d(TAG, "onFailure: " + t.getMessage());
                 t.printStackTrace();
             }
         });
@@ -242,14 +252,12 @@ public class PetFormFragment extends Fragment {
                     ErrorResponse errorResponse = gson.fromJson(response.errorBody().charStream(), errorType);
                     AlertUtil.showErrorAlert(errorResponse.getError(), requireContext());
                 }
-                Log.d(TAG, "onResponse: " + response.toString());
             }
 
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 progressBar.setVisibility(View.GONE);
                 AlertUtil.showGenericErrorAlert(requireContext());
-                Log.d(TAG, "onFailure: " + t.getMessage());
                 t.printStackTrace();
             }
         });
@@ -273,14 +281,12 @@ public class PetFormFragment extends Fragment {
                     ErrorResponse errorResponse = gson.fromJson(response.errorBody().charStream(), errorType);
                     AlertUtil.showErrorAlert(errorResponse.getError(), requireContext());
                 }
-                Log.d(TAG, "onResponse: " + response.toString());
             }
 
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 progressBar.setVisibility(View.GONE);
                 AlertUtil.showGenericErrorAlert(requireContext());
-                Log.d(TAG, "onFailure: " + t.getMessage());
                 t.printStackTrace();
             }
         });
@@ -307,7 +313,9 @@ public class PetFormFragment extends Fragment {
 
     private void initViewModels() {
         petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
-        petViewModel.getUID().observe(getViewLifecycleOwner(), s -> uid = s);
+        petViewModel.getUID().observe(getViewLifecycleOwner(), currentUid -> uid = currentUid);
+
+        vaccineViewModel = new ViewModelProvider(requireActivity()).get(VaccineViewModel.class);
     }
 
     private void initListeners() {
@@ -346,7 +354,7 @@ public class PetFormFragment extends Fragment {
         formAction = PetFormFragmentArgs.fromBundle(getArguments()).getAction();
     }
 
-    private boolean isFormValid() {
+    private boolean isValidForm() {
         return !Objects.requireNonNull(editName.getText()).toString().isEmpty()
                 && !Objects.requireNonNull(editSpecies.getText()).toString().isEmpty()
                 && !Objects.requireNonNull(editBreed.getText()).toString().isEmpty()
@@ -366,6 +374,7 @@ public class PetFormFragment extends Fragment {
         menuSave.setVisible(false);
         menuEdit.setVisible(true);
         menuDelete.setVisible(true);
+        menuVaccines.setVisible(true);
 
         editName.setFocusable(false);
         editSpecies.setFocusable(false);
@@ -379,6 +388,7 @@ public class PetFormFragment extends Fragment {
         menuSave.setVisible(true);
         menuEdit.setVisible(false);
         menuDelete.setVisible(false);
+        menuVaccines.setVisible(false);
 
         editName.setFocusableInTouchMode(true);
         editSpecies.setFocusableInTouchMode(true);
