@@ -1,5 +1,6 @@
 package com.jeanpier.canicat.ui.login;
 
+import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
@@ -34,6 +35,7 @@ import com.jeanpier.canicat.data.network.responses.LoginResponse;
 import com.jeanpier.canicat.databinding.FragmentLoginBinding;
 import com.jeanpier.canicat.ui.pets.viewmodels.PetViewModel;
 import com.jeanpier.canicat.util.AlertUtil;
+import com.jeanpier.canicat.util.KeyboardUtil;
 import com.jeanpier.canicat.util.TextFieldUtil;
 import com.jeanpier.canicat.util.ToastUtil;
 
@@ -184,6 +186,7 @@ public class LoginFragment extends Fragment {
                     String uid = response.body().getUid();
                     petViewModel.setUID(uid);
                     ToastUtil.show(requireContext(), getString(R.string.login_successfull));
+                    KeyboardUtil.hideKeyboard(requireActivity());
                     navigateToPets();
                 } else {
                     if (response.errorBody() == null) {
