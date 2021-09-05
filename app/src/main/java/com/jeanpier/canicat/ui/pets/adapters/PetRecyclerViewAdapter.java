@@ -83,7 +83,7 @@ public class PetRecyclerViewAdapter extends RecyclerView.Adapter<PetRecyclerView
             Context context = itemView.getContext();
             Glide.with(context)
                     .load(Routes.BASE_URI + picture)
-                    .placeholder(R.drawable.ic_pet_placeholder)
+                    .placeholder(R.drawable.logo)
                     .error(R.drawable.ic_pet_placeholder)
 //                  Se desactiva el caché para evitar que al cambiar de imagen aparezca la antigua
                     .skipMemoryCache(true)

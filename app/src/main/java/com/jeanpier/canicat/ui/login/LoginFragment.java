@@ -177,6 +177,7 @@ public class LoginFragment extends Fragment {
         authService.login(email, password).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
+                buttonLogin.setEnabled(true);
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     if (response.body() == null || response.body().getUid() == null) {
@@ -203,6 +204,7 @@ public class LoginFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 AlertUtil.showGenericErrorAlert(requireContext());
                 t.printStackTrace();
+                buttonLogin.setEnabled(true);
             }
         });
     }

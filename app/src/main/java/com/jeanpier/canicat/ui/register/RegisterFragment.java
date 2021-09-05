@@ -198,6 +198,7 @@ public class RegisterFragment extends Fragment {
         userService.create(newUser).enqueue(new Callback<PostUserResponse>() {
             @Override
             public void onResponse(@NonNull Call<PostUserResponse> call, @NonNull Response<PostUserResponse> response) {
+                buttonLogin.setEnabled(true);
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     if (response.body() == null || response.body().getId() == null) {
@@ -221,6 +222,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<PostUserResponse> call, @NonNull Throwable t) {
                 progressBar.setVisibility(View.GONE);
+                buttonLogin.setEnabled(true);
                 AlertUtil.showGenericErrorAlert(requireContext());
                 t.printStackTrace();
             }
