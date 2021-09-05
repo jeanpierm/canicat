@@ -34,7 +34,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jeanpier.canicat.R;
 import com.jeanpier.canicat.config.Routes;
-import com.jeanpier.canicat.core.FormAction;
 import com.jeanpier.canicat.data.model.Pet;
 import com.jeanpier.canicat.data.network.PetService;
 import com.jeanpier.canicat.data.network.responses.ErrorResponse;
@@ -66,7 +65,6 @@ public class PetFormFragment extends Fragment {
     private FragmentPetFormBinding binding;
     private Bitmap pictureBitmap;
     private Pet pet;
-    private FormAction formAction;
     private TextInputEditText editName, editSpecies, editBreed;
     private AutoCompleteTextView editSexo;
     private ProgressBar progressBar;
@@ -116,14 +114,14 @@ public class PetFormFragment extends Fragment {
         menuDelete = menu.findItem(R.id.menu_delete);
         menuVaccines = menu.findItem(R.id.menu_vaccines);
 
-        if (formAction == FormAction.EDIT) {
+        if (isEditing()) {
             readMode();
         } else {
-            editMode();
+            writeMode();
         }
 
         menuEdit.setOnMenuItemClickListener(item -> {
-            editMode();
+            writeMode();
 //            pone focus al editText del nombre, indicandole al usuario que puede editar
             InputMethodManager imm = (InputMethodManager) requireActivity()
                     .getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -138,7 +136,7 @@ public class PetFormFragment extends Fragment {
                 return false;
             }
             KeyboardUtil.hideKeyboard(requireActivity());
-            if (pet.getId() != null) {
+            if (isEditing()) {
                 updatePet();
             } else {
                 postPet();
@@ -177,18 +175,17 @@ public class PetFormFragment extends Fragment {
     }
 
     private void initUI() {
-        bindViews();
+        initViews();
         progressBar.setVisibility(View.GONE);
-        setFormActionFromArgs();
         setPetFromArgs();
-        if (formAction == FormAction.EDIT) fillFormFields();
+        if (isEditing()) fillFormFields();
         setActionBarTitle();
         loadDropdownOptions();
         initListeners();
         initViewModels();
     }
 
-    private void bindViews() {
+    private void initViews() {
         editName = binding.editName;
         editSpecies = binding.editSpecies;
         editBreed = binding.editBreed;
@@ -327,8 +324,7 @@ public class PetFormFragment extends Fragment {
     }
 
     private void setActionBarTitle() {
-        String title = formAction == FormAction.EDIT ?
-                getString(R.string.title_edit) : getString(R.string.title_create);
+        String title = isEditing() ? getString(R.string.title_edit) : getString(R.string.title_create);
         Objects.requireNonNull(
                 ((AppCompatActivity) requireActivity()).getSupportActionBar()
         ).setTitle(title);
@@ -348,10 +344,6 @@ public class PetFormFragment extends Fragment {
     private void setPetFromArgs() {
         String petJson = PetFormFragmentArgs.fromBundle(getArguments()).getPet();
         pet = new Gson().fromJson(petJson, Pet.class);
-    }
-
-    private void setFormActionFromArgs() {
-        formAction = PetFormFragmentArgs.fromBundle(getArguments()).getAction();
     }
 
     private boolean isValidForm() {
@@ -384,7 +376,7 @@ public class PetFormFragment extends Fragment {
         fabPicture.setVisibility(View.INVISIBLE);
     }
 
-    private void editMode() {
+    private void writeMode() {
         menuSave.setVisible(true);
         menuEdit.setVisible(false);
         menuDelete.setVisible(false);
@@ -396,6 +388,10 @@ public class PetFormFragment extends Fragment {
         editSexo.setFocusableInTouchMode(true);
         loadDropdownOptions();
         fabPicture.setVisibility(View.VISIBLE);
+    }
+
+    private boolean isEditing() {
+        return pet.getId() != null;
     }
 
     @Override

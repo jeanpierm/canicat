@@ -15,7 +15,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.jeanpier.canicat.R;
 import com.jeanpier.canicat.config.Routes;
-import com.jeanpier.canicat.core.FormAction;
 import com.jeanpier.canicat.data.model.Pet;
 import com.jeanpier.canicat.databinding.PetItemBinding;
 import com.jeanpier.canicat.ui.pets.fragments.PetFragmentDirections;
@@ -39,43 +38,14 @@ public class PetRecyclerViewAdapter extends RecyclerView.Adapter<PetRecyclerView
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(PetItemBinding
-                .inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        return new ViewHolder(PetItemBinding.inflate(layoutInflater, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Context context = holder.itemView.getContext();
-        Resources res = context.getResources();
-        Pet currentPet = pets.get(position);
-
-        holder.binding.textName.setText(currentPet.getName());
-        holder.binding.textType.setText(
-                String.format(res.getString(R.string.text_pet_type), currentPet.getBreed(),
-                        currentPet.getSpecies())
-        );
-
-        if (currentPet.getPicture() != null) {
-//          Load pet picture
-            Glide.with(context)
-                    .load(Routes.BASE_URI + currentPet.getPicture())
-                    .placeholder(R.drawable.ic_pet_placeholder)
-                    .error(R.drawable.ic_pet_placeholder)
-//                  Se desactiva el caché para evitar que al cambiar de imagen aparezca la antigua
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(holder.binding.circlePicture);
-        }
-
-        holder.binding.layoutPet.setOnClickListener(v -> {
-            PetFragmentDirections.ActionNavPetsToNavPetForm action =
-                    PetFragmentDirections.actionNavPetsToNavPetForm(
-                            new Gson().toJson(currentPet), FormAction.EDIT
-                    );
-            Navigation.findNavController(v).navigate(action);
-        });
-
-
+        holder.render(pets.get(position));
+        holder.setClickLayoutListener(pets.get(position));
     }
 
     @Override
@@ -83,13 +53,42 @@ public class PetRecyclerViewAdapter extends RecyclerView.Adapter<PetRecyclerView
         return pets.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final PetItemBinding binding;
 
         public ViewHolder(PetItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+        }
+
+        public void render(Pet pet) {
+            Resources res = itemView.getResources();
+            binding.textName.setText(pet.getName());
+            String type = String.format(res.getString(R.string.text_pet_type), pet.getBreed(), pet.getSpecies());
+            binding.textType.setText(type);
+            if (pet.getPicture() != null) loadPicture(pet.getPicture());
+        }
+
+        public void setClickLayoutListener(Pet pet) {
+            String petSelected = new Gson().toJson(pet);
+            binding.layoutPet.setOnClickListener(v -> {
+                PetFragmentDirections.ActionNavPetsToNavPetForm action =
+                        PetFragmentDirections.actionNavPetsToNavPetForm(petSelected);
+                Navigation.findNavController(v).navigate(action);
+            });
+        }
+
+        private void loadPicture(String picture) {
+            Context context = itemView.getContext();
+            Glide.with(context)
+                    .load(Routes.BASE_URI + picture)
+                    .placeholder(R.drawable.ic_pet_placeholder)
+                    .error(R.drawable.ic_pet_placeholder)
+//                  Se desactiva el caché para evitar que al cambiar de imagen aparezca la antigua
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(binding.circlePicture);
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.jeanpier.canicat.ui.login;
 
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
@@ -171,6 +170,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void login() {
+        buttonLogin.setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
         String email = TextFieldUtil.getString(editEmail);
         String password = TextFieldUtil.getString(editPassword);
