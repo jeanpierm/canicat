@@ -29,6 +29,7 @@ import androidx.navigation.Navigation;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -51,7 +52,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -69,7 +69,7 @@ public class PetFormFragment extends Fragment {
     private AutoCompleteTextView editSexo;
     private ProgressBar progressBar;
     private FloatingActionButton fabPicture;
-    private CircleImageView circlePicture;
+    private ShapeableImageView circlePicture;
     private PetViewModel petViewModel;
     private VaccineViewModel vaccineViewModel;
     private MenuItem menuSave, menuEdit, menuDelete, menuVaccines;

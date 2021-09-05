@@ -3,4 +3,8 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/brown_500</item>
     </style>
+    <style name="roundedImageViewRounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

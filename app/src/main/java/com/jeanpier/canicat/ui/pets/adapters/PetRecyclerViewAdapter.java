@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.jeanpier.canicat.R;
 import com.jeanpier.canicat.config.Routes;
+import com.jeanpier.canicat.core.GlideApp;
 import com.jeanpier.canicat.data.model.Pet;
 import com.jeanpier.canicat.databinding.PetItemBinding;
 import com.jeanpier.canicat.ui.pets.fragments.PetFragmentDirections;
@@ -81,9 +83,14 @@ public class PetRecyclerViewAdapter extends RecyclerView.Adapter<PetRecyclerView
 
         private void loadPicture(String picture) {
             Context context = itemView.getContext();
-            Glide.with(context)
+            CircularProgressDrawable progressDrawable = new CircularProgressDrawable(context);
+            progressDrawable.setStrokeWidth(5);
+            progressDrawable.setCenterRadius(30);
+            progressDrawable.start();
+
+            GlideApp.with(context)
                     .load(Routes.BASE_URI + picture)
-                    .placeholder(R.drawable.logo)
+                    .placeholder(progressDrawable)
                     .error(R.drawable.ic_pet_placeholder)
 //                  Se desactiva el caché para evitar que al cambiar de imagen aparezca la antigua
                     .skipMemoryCache(true)
