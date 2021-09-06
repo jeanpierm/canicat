@@ -27,36 +27,36 @@ import retrofit2.http.Path;
 
 public interface DataApi {
 
-    @GET(Routes.API_APTH + Routes.USERS_PATH + "/{userId}" + Routes.PETS_PATH)
+    @GET(Routes.API_PATH + Routes.USERS_PATH + "/{userId}" + Routes.PETS_PATH)
     Call<List<Pet>> getPetsByUserId(@Path("userId") String userId);
 
 
-    @POST(Routes.API_APTH + Routes.USERS_PATH)
+    @POST(Routes.API_PATH + Routes.USERS_PATH)
     Call<PostUserResponse> createUser(@Body User user);
 
-    @PATCH(Routes.API_APTH + Routes.PETS_PATH + "/{petId}")
+    @PATCH(Routes.API_PATH + Routes.PETS_PATH + "/{petId}")
     Call<Void> updatePetById(@Path("petId") String petId, @Body Pet pet);
 
-    @DELETE(Routes.API_APTH + Routes.PETS_PATH + "/{petId}")
+    @DELETE(Routes.API_PATH + Routes.PETS_PATH + "/{petId}")
     Call<Void> deletePetById(@Path("petId") String id);
 
 
-    @POST(Routes.API_APTH + Routes.PETS_PATH)
+    @POST(Routes.API_PATH + Routes.PETS_PATH)
     Call<PostPetResponse> createPet(@Body Pet pet);
 
     //vaccine routes
 
-    @POST(Routes.API_APTH  + Routes.VACCINE_PATH)
+    @POST(Routes.API_PATH + Routes.VACCINE_PATH)
     Call<Vaccine> saveVaccineRecord(@Body Vaccine vaccine);
 
-    @GET(Routes.API_APTH + Routes.PETS_PATH+ "/{petId}"+ Routes.VACCINE_PATH)
+    @GET(Routes.API_PATH + Routes.PETS_PATH+ "/{petId}"+ Routes.VACCINE_PATH)
     Call<List<Vaccine>> getVaccineByPetId(@Path("petId") String petId);
 
-    @DELETE(Routes.API_APTH + Routes.VACCINE_PATH + "/{vaccineId}")
+    @DELETE(Routes.API_PATH + Routes.VACCINE_PATH + "/{vaccineId}")
     Call<Void> deleteVaccine(@Path("vaccineId") String id);
 
 
-    @POST(Routes.API_APTH + Routes.LOGIN_PATH)
+    @POST(Routes.API_PATH + Routes.LOGIN_PATH)
     @FormUrlEncoded
     Call<LoginResponse> login(@Field("email") String email, @Field("password") String password);
 

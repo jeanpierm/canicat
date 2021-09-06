@@ -75,7 +75,6 @@ public class PetRecyclerViewAdapter extends RecyclerView.Adapter<PetRecyclerView
             Navigation.findNavController(v).navigate(action);
         });
 
-
     }
 
     @Override

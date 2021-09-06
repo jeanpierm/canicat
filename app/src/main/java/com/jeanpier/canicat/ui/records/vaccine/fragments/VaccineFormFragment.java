@@ -17,7 +17,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
 import com.jeanpier.canicat.R;
+import com.jeanpier.canicat.core.FormAction;
+import com.jeanpier.canicat.data.model.Pet;
 import com.jeanpier.canicat.data.model.Vaccine;
 import com.jeanpier.canicat.data.network.VaccineService;
 import com.jeanpier.canicat.databinding.FragmentVaccineFormBinding;
@@ -38,13 +42,16 @@ public class VaccineFormFragment extends Fragment {
     private VaccineViewModel vaccineViewModel;
     private FragmentVaccineFormBinding binding;
     private String petId;
+    private Vaccine vaccine;
     private NavController navController;
     private DatePickerDialog.OnDateSetListener onDateSetListener;
     private DatePickerDialog.OnDateSetListener onDateSetListener2;
     private String lastDate;
     private String nextDate;
+    private TextInputEditText editName, editType, editDescription;
     private static final String TAG = "VaccineFormFragment";
     private final VaccineService vaccineService = new VaccineService();
+    private final Gson gson = new Gson();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,8 +87,16 @@ public class VaccineFormFragment extends Fragment {
 
     private void initUI() {
         binding.progressBar.setVisibility(View.GONE);
+        setVaccineFromArgs();
+        if(!vaccine.getPetId().isEmpty()){ fillFormVaccine();}
         initListeners();
         initViewModels();
+    }
+
+    private void bindViews(){
+        editName = binding.vaccineName;
+        editType = binding.vaccineName;
+        editDescription = binding.vaccineDescription;
     }
 
     private void postVaccine() {
@@ -201,11 +216,10 @@ public class VaccineFormFragment extends Fragment {
         };
     }
 
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    private void fillFormVaccine() {
+        editName.setText(vaccine.getName());
+        editType.setText(vaccine.getType());
+        editDescription.setText(vaccine.getDescription());
     }
 
     public boolean isValidForm() {
@@ -226,5 +240,16 @@ public class VaccineFormFragment extends Fragment {
         }
 
         return true;
+    }
+
+    private void setVaccineFromArgs(){
+        String vaccineJson = VaccineFormFragmentArgs.fromBundle(getArguments()).getVaccine();
+        vaccine =  new Gson().fromJson(vaccineJson, Vaccine.class);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

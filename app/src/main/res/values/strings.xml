@@ -79,5 +79,7 @@
     <string name="pet_not_loaded">Disculpa, no se ha podido leer correctamente la mascota. Vuelve a intentarlo más tarde.</string>
     <string name="vaccine_deleted_error">Ocurrió un erro al intentar eliminar la vacuna :(</string>
     <string name="vaccine_deleted_successful">Vacuna eliminada correctamente</string>
+    <string name="label_type">Tipo de vacuna</string>
+    <string name="label_description">Descripción</string>
 
 </resources>

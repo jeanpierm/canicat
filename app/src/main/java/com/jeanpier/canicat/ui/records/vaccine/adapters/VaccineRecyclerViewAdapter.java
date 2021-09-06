@@ -3,20 +3,26 @@ package com.jeanpier.canicat.ui.records.vaccine.adapters;
 import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jeanpier.canicat.R;
+import com.jeanpier.canicat.core.FormAction;
 import com.jeanpier.canicat.data.model.Vaccine;
 import com.jeanpier.canicat.data.network.VaccineService;
 import com.jeanpier.canicat.data.network.responses.ErrorResponse;
 import com.jeanpier.canicat.databinding.FragmentVaccineRecordBinding;
+import com.jeanpier.canicat.ui.records.RecordsFragmentDirections;
+import com.jeanpier.canicat.ui.records.vaccine.fragments.VaccineFormFragmentDirections;
 import com.jeanpier.canicat.ui.records.vaccine.viewmodels.VaccineViewModel;
 import com.jeanpier.canicat.util.AlertUtil;
 import com.jeanpier.canicat.util.ToastUtil;
@@ -65,9 +71,17 @@ public class VaccineRecyclerViewAdapter extends RecyclerView.Adapter<VaccineRecy
     public void onBindViewHolder(@NonNull VaccineRecyclerViewAdapter.ViewHolder holder, int position) {
         Vaccine currentVaccine = vaccines.get(position);
         holder.binding.vaccinename.setText(currentVaccine.getName());
-        holder.binding.vaccineNextdate.setText("Proxima dosis:" + currentVaccine.getNextVaccineDate());
+        holder.binding.vaccineNextdate.setText("Próxima dosis:" + currentVaccine.getNextVaccineDate());
         holder.binding.buttonDelete.setOnClickListener(v -> deleteVaccine(currentVaccine.getId())
         );
+
+        holder.binding.itemLayout.setOnClickListener(v -> {
+            RecordsFragmentDirections.ActionNavRecordsToNavVaccineForm action =
+                    RecordsFragmentDirections.actionNavRecordsToNavVaccineForm(
+                            new Gson().toJson(currentVaccine)
+                    );
+            Navigation.findNavController(v).navigate(action);
+        });
     }
 
     private void deleteVaccine(String id) {

@@ -3,48 +3,52 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/drawable/ic_menu_delete.xml" value="0.2890625" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/drawable/ic_pet_placeholder.xml" value="0.2890625" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/drawable/ic_picture.xml" value="0.2890625" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/drawable/ic_trash.xml" value="0.2890625" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/activity_main.xml" value="0.19739583333333333" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/app_bar_main.xml" value="0.2368659420289855" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/content_main.xml" value="0.213768115942029" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/fragment_disease_form.xml" value="0.23324275362318841" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/fragment_disease_record.xml" value="0.23324275362318841" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/fragment_disease_record_list.xml" value="0.23324275362318841" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/fragment_login.xml" value="0.23324275362318841" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/fragment_pet_form.xml" value="0.213768115942029" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/fragment_pet_list.xml" value="0.21784420289855072" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/fragment_pets.xml" value="0.21105072463768115" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/fragment_records.xml" value="0.21965579710144928" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/fragment_register.xml" value="0.21965579710144928" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/fragment_treatment_record.xml" value="0.21105072463768115" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/fragment_treatment_record_list.xml" value="0.21105072463768115" />
         <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/fragment_vaccine_form.xml" value="0.33" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/fragment_vaccine_record.xml" value="0.33" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/fragment_vaccine_record_list.xml" value="0.21965579710144928" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/nav_header_main.xml" value="0.1933876811594203" />
-        <entry key="..\:/Users/User/Documents/ciclo 1 2021/electiva/proyecto/canicat/app/src/main/res/layout/pet_item.xml" value="0.21784420289855072" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable-v24/ic_delete.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable-v24/ic_edit.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable-v24/ic_save.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/ic_baseline_exit_to_app.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/ic_dog_placeholder.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/ic_menu_camera.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/ic_menu_check.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/ic_menu_delete.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/ic_menu_edit.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/ic_menu_gallery.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/ic_menu_medical_services.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/ic_pet_placeholder.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/ic_pets.xml" value="0.30185185185185187" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/ic_picture.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/drawable/side_nav_bar.xml" value="0.3880208333333333" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/activity_canicat_maps.xml" value="0.371875" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/activity_records.xml" value="0.371875" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/app_bar_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/content_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/disease_form_fragment.xml" value="0.371875" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/dropdown_item.xml" value="0.371875" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_disease.xml" value="0.371875" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_disease_form.xml" value="0.371875" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_disease_list.xml" value="0.3578125" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_disease_record.xml" value="0.29375" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_disease_record_list.xml" value="0.262037037037037" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_fullscreen.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_gallery.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_home.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_login.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_pet.xml" value="0.33" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_pet_details.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_pet_form.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_pet_item.xml" value="0.1" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_pet_list.xml" value="0.33" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_pets.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_records.xml" value="0.3578125" />
-        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_register.xml" value="0.33" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_register.xml" value="0.1" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_search_canicat.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_slideshow.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_treatment_form.xml" value="0.371875" />
@@ -53,17 +57,24 @@
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_vaccine_form.xml" value="0.371875" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_vaccine_record.xml" value="0.371875" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/fragment_vaccine_record_list.xml" value="0.2796875" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/list_item.xml" value="0.371875" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/login_fragment.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/nav_header_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/pet_details_fragment.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/pet_form_fragment.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/pet_item.xml" value="0.5255474452554745" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/layout/view_header.xml" value="0.371875" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/menu/activity_main_drawer.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/menu/main.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/menu/menu_editor.xml" value="0.371875" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/menu/menu_logout.xml" value="0.371875" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.3880208333333333" />
+        <entry key="..\:/Users/jeanp/AndroidStudioProjects/Canicat/app/src/main/res/xml/network_security_config.xml" value="0.18063063063063062" />
       </map>
     </option>
   </component>
-  <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

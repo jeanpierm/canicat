@@ -6,140 +6,62 @@
     android:layout_height="match_parent"
     tools:context=".ui.records.vaccine.fragments.VaccineFormFragment">
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="350dp"
-        android:layout_height="28dp"
-        android:text="Nombre"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="55dp"
+        android:hint="@string/label_name"
+        app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.524"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.086" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/vaccine_name"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="368dp"
-        android:ems="10"
-        app:layout_constraintEnd_toEndOf="@+id/name"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/vaccine_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName|textCapWords" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-
-    <TextView
-        android:id="@+id/type"
-        android:layout_width="350dp"
-        android:layout_height="28dp"
-        android:text="Tipo"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="25dp"
+        android:hint="@string/label_type"
+        app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.524"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.22" />
+        app:layout_constraintTop_toBottomOf="@id/layout_name">
 
-    <EditText
-        android:id="@+id/vaccine_type"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="368dp"
-        android:ems="10"
-        app:layout_constraintEnd_toEndOf="@+id/type"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/type" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/vaccine_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName|textCapWords" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/date"
-        android:layout_width="350dp"
-        android:layout_height="28dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="25dp"
         android:text="Fecha de dosis"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.524"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.349" />
-
-    <TextView
-        android:id="@+id/textDateNext"
-        android:layout_width="194dp"
-        android:layout_height="40dp"
-        android:background="#393b3c"
-        android:gravity="center"
-        android:text="Seleccione"
-        android:textColor="@color/white"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/datepicker"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.57"
-
-        />
-
-    <TextView
-        android:id="@+id/daten"
-        android:layout_width="350dp"
-        android:layout_height="28dp"
-        android:text="Fecha de segunda dosis"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.524"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
-
-    <ImageButton
-        android:id="@+id/dateNext"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="4dp"
-        android:backgroundTint="@color/canicat_secondary"
-        android:src="@drawable/ic_calendar"
-        app:layout_constraintHorizontal_bias="0.196"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/daten" />
-
-    <TextView
-        android:id="@+id/textDate"
-        android:layout_width="194dp"
-        android:layout_height="40dp"
-        android:background="#393b3c"
-        android:gravity="center"
-        android:text="Seleccione"
-        android:textColor="@color/white"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/datepicker"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.42" />
+        app:layout_constraintTop_toBottomOf="@id/layout_type" />
 
     <ImageButton
         android:id="@+id/datepicker"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginHorizontal="2dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="@color/canicat_secondary"
         android:src="@drawable/ic_calendar"
         app:layout_constraintHorizontal_bias="0.196"
@@ -148,30 +70,76 @@
         app:layout_constraintTop_toBottomOf="@+id/date" />
 
     <TextView
-        android:id="@+id/description"
-        android:layout_width="350dp"
-        android:layout_height="28dp"
-        android:text="Descripción"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.524"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65" />
+        android:id="@+id/textDate"
+        android:layout_width="194dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="14dp"
+        android:background="@color/teal_200"
+        android:gravity="center"
+        android:text="Seleccione"
+        android:textColor="@color/white"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@+id/datepicker"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date" />
 
-    <EditText
-        android:id="@+id/vaccine_description"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="368dp"
-        android:ems="10"
-        app:layout_constraintEnd_toEndOf="@+id/description"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="parent"
+    <TextView
+        android:id="@+id/textDateNext"
+        android:layout_width="194dp"
+        android:layout_height="40dp"
+        android:background="@color/teal_200"
+        android:layout_marginTop="14dp"
+        android:gravity="center"
+        android:text="Seleccione"
+        android:textColor="@color/white"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@+id/dateNext"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/daten"
+        />
+
+    <TextView
+        android:id="@+id/daten"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="25dp"
+        android:text="Próxima dosis"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        app:layout_constraintTop_toBottomOf="@id/datepicker" />
+
+    <ImageButton
+        android:id="@+id/dateNext"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="2dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/canicat_secondary"
+        android:src="@drawable/ic_calendar"
+        app:layout_constraintHorizontal_bias="0.196"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/daten" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:hint="@string/label_description"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateNext">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/vaccine_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName|textCapWords" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/guardar"

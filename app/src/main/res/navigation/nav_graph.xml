@@ -73,12 +73,9 @@
         android:id="@+id/nav_records"
         android:name="com.jeanpier.canicat.ui.records.RecordsFragment"
         android:label="Registros"
-        tools:layout="@layout/fragment_records" >
+        tools:layout="@layout/fragment_records">
         <action
             android:id="@+id/action_nav_records_to_nav_vaccine_form"
-            app:destination="@id/nav_vaccine_form" />
-        <action
-            android:id="@+id/action_nav_records_to_nav_vaccine_form_edit"
             app:destination="@id/nav_vaccine_form" />
     </fragment>
     <fragment
@@ -89,6 +86,9 @@
         <action
             android:id="@+id/action_nav_vaccine_form_to_nav_records"
             app:destination="@id/nav_records" />
+        <argument
+            android:name="vaccine"
+            app:argType="string" />
     </fragment>
 
 </navigation>
