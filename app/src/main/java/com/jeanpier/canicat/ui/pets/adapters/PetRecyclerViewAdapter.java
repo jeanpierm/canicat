@@ -13,6 +13,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.google.gson.Gson;
 import com.jeanpier.canicat.R;
 import com.jeanpier.canicat.config.Routes;
@@ -83,17 +84,18 @@ public class PetRecyclerViewAdapter extends RecyclerView.Adapter<PetRecyclerView
 
         private void loadPicture(String picture) {
             Context context = itemView.getContext();
-            CircularProgressDrawable progressDrawable = new CircularProgressDrawable(context);
-            progressDrawable.setStrokeWidth(5);
-            progressDrawable.setCenterRadius(30);
-            progressDrawable.start();
+//            CircularProgressDrawable progressDrawable = new CircularProgressDrawable(context);
+//            progressDrawable.setStrokeWidth(5);
+//            progressDrawable.setCenterRadius(30);
+//            progressDrawable.start();
 
             GlideApp.with(context)
                     .load(Routes.BASE_URI + picture)
-                    .placeholder(progressDrawable)
+//                    .placeholder(progressDrawable)
                     .error(R.drawable.ic_pet_placeholder)
 //                  Se desactiva el caché para evitar que al cambiar de imagen aparezca la antigua
                     .skipMemoryCache(true)
+                    .transition(DrawableTransitionOptions.withCrossFade())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(binding.circlePicture);
         }

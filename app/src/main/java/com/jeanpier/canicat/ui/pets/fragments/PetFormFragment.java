@@ -28,6 +28,7 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -35,6 +36,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jeanpier.canicat.R;
 import com.jeanpier.canicat.config.Routes;
+import com.jeanpier.canicat.core.GlideApp;
 import com.jeanpier.canicat.data.model.Pet;
 import com.jeanpier.canicat.data.network.PetService;
 import com.jeanpier.canicat.data.network.responses.ErrorResponse;
@@ -291,21 +293,24 @@ public class PetFormFragment extends Fragment {
 
 
     private void fillFormFields() {
-        if (pet.getPicture() != null) {
-            Glide.with(requireContext())
-                    .load(Routes.BASE_URI + pet.getPicture())
-                    .placeholder(R.drawable.ic_pet_placeholder)
-                    .error(R.drawable.ic_pet_placeholder)
-//                  Se desactiva el caché para evitar que al cambiar de foto de la mascota aparezca la antigua
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(circlePicture);
-        }
+        if (pet.getPicture() != null) loadPetPicture();
         editName.setText(pet.getName());
         editSpecies.setText(pet.getSpecies());
         editBreed.setText(pet.getBreed());
 //        filtro en falso para que aparezcan las demás opciones del dropdown
         editSexo.setText(pet.getSexo(), false);
+    }
+
+    private void loadPetPicture() {
+        GlideApp.with(requireContext())
+                .load(Routes.BASE_URI + pet.getPicture())
+//                .placeholder(R.drawable.ic_pet_placeholder)
+                .error(R.drawable.ic_pet_placeholder)
+//                  Se desactiva el caché para evitar que al cambiar de foto de la mascota aparezca la antigua
+                .skipMemoryCache(true)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(circlePicture);
     }
 
     private void initViewModels() {
