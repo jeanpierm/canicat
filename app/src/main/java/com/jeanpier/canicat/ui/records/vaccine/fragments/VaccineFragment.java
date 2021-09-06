@@ -45,6 +45,7 @@ public class VaccineFragment extends Fragment {
 
     private void initUI() {
         initViewModels();
+        vaccineViewModel.loadVaccines();
         initRecyclerView();
         initListeners();
     }
