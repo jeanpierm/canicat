@@ -56,7 +56,6 @@ public class VaccineRecyclerViewAdapter extends RecyclerView.Adapter<VaccineRecy
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         return new ViewHolder(FragmentVaccineRecordBinding
                 .inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
@@ -66,35 +65,36 @@ public class VaccineRecyclerViewAdapter extends RecyclerView.Adapter<VaccineRecy
         Vaccine currentVaccine = vaccines.get(position);
         holder.binding.vaccinename.setText(currentVaccine.getName());
         holder.binding.vaccineNextdate.setText("Proxima dosis:" + currentVaccine.getNextVaccineDate());
-        holder.binding.buttonDelete.setOnClickListener(v -> deleteVaccine(currentVaccine.getId())
-        );
-    }
 
-    private void deleteVaccine(String id) {
-        vaccineService.deleteVaccine(id).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                vaccineViewModel.loadVaccines();
-                if (response.isSuccessful()) {
-                    ToastUtil.show(fragmentActivity, fragmentActivity.getString(R.string.vaccine_deleted_successful));
-                } else {
-                    if (response.errorBody() == null) {
-                        AlertUtil.showErrorAlert(
-                                fragmentActivity.getString(R.string.vaccine_deleted_error),
-                                fragmentActivity);
-                        return;
+        holder.binding.buttonDelete.setOnClickListener(v -> {
+            holder.binding.buttonDelete.setEnabled(false);
+            vaccineService.deleteVaccine(currentVaccine.getId()).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        vaccineViewModel.loadVaccines();
+                        ToastUtil.show(fragmentActivity, fragmentActivity.getString(R.string.vaccine_deleted_successful));
+                    } else {
+                        if (response.errorBody() == null) {
+                            AlertUtil.showErrorAlert(
+                                    fragmentActivity.getString(R.string.vaccine_deleted_error),
+                                    fragmentActivity);
+                            return;
+                        }
+                        ErrorResponse errorResponse = gson.fromJson(response.errorBody().charStream(), errorType);
+                        AlertUtil.showErrorAlert(errorResponse.getError(), fragmentActivity);
+                        Log.d(TAG, "onResponse: " + response.errorBody());
                     }
-                    ErrorResponse errorResponse = gson.fromJson(response.errorBody().charStream(), errorType);
-                    AlertUtil.showErrorAlert(errorResponse.getError(), fragmentActivity);
-                    Log.d(TAG, "onResponse: " + response.errorBody());
+                    holder.binding.buttonDelete.setEnabled(true);
                 }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                AlertUtil.showGenericErrorAlert(fragmentActivity);
-                t.printStackTrace();
-            }
+                @Override
+                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                    AlertUtil.showGenericErrorAlert(fragmentActivity);
+                    t.printStackTrace();
+                    holder.binding.buttonDelete.setEnabled(true);
+                }
+            });
         });
     }
 
@@ -106,7 +106,6 @@ public class VaccineRecyclerViewAdapter extends RecyclerView.Adapter<VaccineRecy
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final FragmentVaccineRecordBinding binding;
-
 
         public ViewHolder(FragmentVaccineRecordBinding binding) {
             super(binding.getRoot());

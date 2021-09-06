@@ -78,7 +78,6 @@ public class PetFragment extends Fragment {
         initViewModels();
 //        vuelve a cargar las mascotas cada vez que se muestra el fragmento,
 //        para así actualizar la lista después de añadir/editar/eliminar
-        petViewModel.loadPets();
         initRecyclerView();
         initListeners();
     }
@@ -105,6 +104,7 @@ public class PetFragment extends Fragment {
         petViewModel.isLoading().observe(getViewLifecycleOwner(), integer -> {
             binding.progressBar.setVisibility(integer);
         });
+//        petViewModel.loadPets();
     }
 
     @Override

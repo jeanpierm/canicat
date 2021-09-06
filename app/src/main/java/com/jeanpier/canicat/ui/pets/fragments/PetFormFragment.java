@@ -210,6 +210,7 @@ public class PetFormFragment extends Fragment {
 //                    se actualiza el id para poder eliminar una mascota sin errores
                     pet = newPet;
                     pet.setId(petId);
+                    petViewModel.loadPets();
                     ToastUtil.show(requireContext(), getString(R.string.pet_created_successfull));
                 } else {
                     if (response.errorBody() == null) {
@@ -242,6 +243,7 @@ public class PetFormFragment extends Fragment {
 //                    se actualiza localmente el nombre de la mascota para la alerta de "borrar",
 //                    alerta la cual muestra el nombre d ela mascota
                     pet.setName(newPet.getName());
+                    petViewModel.loadPets();
                     ToastUtil.show(requireContext(), getString(R.string.pet_updated_successfull));
                 } else {
                     if (response.errorBody() == null) {
@@ -271,6 +273,7 @@ public class PetFormFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     ToastUtil.show(requireContext(), getString(R.string.pet_deleted_succesfull));
+                    petViewModel.loadPets();
                     navController.navigate(PetFormFragmentDirections.actionNavPetFormToNavPets());
                 } else {
                     if (response.errorBody() == null) {

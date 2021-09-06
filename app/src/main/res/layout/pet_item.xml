@@ -20,11 +20,11 @@
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:scaleType="centerCrop"
+            android:src="@drawable/ic_pet_placeholder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-            tools:src="@drawable/ic_pet_placeholder" />
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
 
         <TextView
             android:id="@+id/text_name"
