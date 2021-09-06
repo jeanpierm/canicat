@@ -28,13 +28,15 @@ import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jeanpier.canicat.R;
 import com.jeanpier.canicat.config.Routes;
-import com.jeanpier.canicat.core.FormAction;
+import com.jeanpier.canicat.core.GlideApp;
 import com.jeanpier.canicat.data.model.Pet;
 import com.jeanpier.canicat.data.network.PetService;
 import com.jeanpier.canicat.data.network.responses.ErrorResponse;
@@ -52,7 +54,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -66,12 +67,11 @@ public class PetFormFragment extends Fragment {
     private FragmentPetFormBinding binding;
     private Bitmap pictureBitmap;
     private Pet pet;
-    private FormAction formAction;
     private TextInputEditText editName, editSpecies, editBreed;
     private AutoCompleteTextView editSexo;
     private ProgressBar progressBar;
     private FloatingActionButton fabPicture;
-    private CircleImageView circlePicture;
+    private ShapeableImageView circlePicture;
     private PetViewModel petViewModel;
     private VaccineViewModel vaccineViewModel;
     private MenuItem menuSave, menuEdit, menuDelete, menuVaccines;
@@ -116,14 +116,14 @@ public class PetFormFragment extends Fragment {
         menuDelete = menu.findItem(R.id.menu_delete);
         menuVaccines = menu.findItem(R.id.menu_vaccines);
 
-        if (formAction == FormAction.EDIT) {
+        if (isEditing()) {
             readMode();
         } else {
-            editMode();
+            writeMode();
         }
 
         menuEdit.setOnMenuItemClickListener(item -> {
-            editMode();
+            writeMode();
 //            pone focus al editText del nombre, indicandole al usuario que puede editar
             InputMethodManager imm = (InputMethodManager) requireActivity()
                     .getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -138,7 +138,7 @@ public class PetFormFragment extends Fragment {
                 return false;
             }
             KeyboardUtil.hideKeyboard(requireActivity());
-            if (pet.getId() != null) {
+            if (isEditing()) {
                 updatePet();
             } else {
                 postPet();
@@ -177,18 +177,17 @@ public class PetFormFragment extends Fragment {
     }
 
     private void initUI() {
-        bindViews();
+        initViews();
         progressBar.setVisibility(View.GONE);
-        setFormActionFromArgs();
         setPetFromArgs();
-        if (formAction == FormAction.EDIT) fillFormFields();
+        if (isEditing()) fillFormFields();
         setActionBarTitle();
         loadDropdownOptions();
         initListeners();
         initViewModels();
     }
 
-    private void bindViews() {
+    private void initViews() {
         editName = binding.editName;
         editSpecies = binding.editSpecies;
         editBreed = binding.editBreed;
@@ -211,6 +210,7 @@ public class PetFormFragment extends Fragment {
 //                    se actualiza el id para poder eliminar una mascota sin errores
                     pet = newPet;
                     pet.setId(petId);
+                    petViewModel.loadPets();
                     ToastUtil.show(requireContext(), getString(R.string.pet_created_successfull));
                 } else {
                     if (response.errorBody() == null) {
@@ -243,6 +243,7 @@ public class PetFormFragment extends Fragment {
 //                    se actualiza localmente el nombre de la mascota para la alerta de "borrar",
 //                    alerta la cual muestra el nombre d ela mascota
                     pet.setName(newPet.getName());
+                    petViewModel.loadPets();
                     ToastUtil.show(requireContext(), getString(R.string.pet_updated_successfull));
                 } else {
                     if (response.errorBody() == null) {
@@ -272,6 +273,7 @@ public class PetFormFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     ToastUtil.show(requireContext(), getString(R.string.pet_deleted_succesfull));
+                    petViewModel.loadPets();
                     navController.navigate(PetFormFragmentDirections.actionNavPetFormToNavPets());
                 } else {
                     if (response.errorBody() == null) {
@@ -294,21 +296,24 @@ public class PetFormFragment extends Fragment {
 
 
     private void fillFormFields() {
-        if (pet.getPicture() != null) {
-            Glide.with(requireContext())
-                    .load(Routes.BASE_URI + pet.getPicture())
-                    .placeholder(R.drawable.ic_pet_placeholder)
-                    .error(R.drawable.ic_pet_placeholder)
-//                  Se desactiva el caché para evitar que al cambiar de foto de la mascota aparezca la antigua
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(circlePicture);
-        }
+        if (pet.getPicture() != null) loadPetPicture();
         editName.setText(pet.getName());
         editSpecies.setText(pet.getSpecies());
         editBreed.setText(pet.getBreed());
 //        filtro en falso para que aparezcan las demás opciones del dropdown
         editSexo.setText(pet.getSexo(), false);
+    }
+
+    private void loadPetPicture() {
+        GlideApp.with(requireContext())
+                .load(Routes.BASE_URI + pet.getPicture())
+//                .placeholder(R.drawable.ic_pet_placeholder)
+                .error(R.drawable.ic_pet_placeholder)
+//                  Se desactiva el caché para evitar que al cambiar de foto de la mascota aparezca la antigua
+                .skipMemoryCache(true)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(circlePicture);
     }
 
     private void initViewModels() {
@@ -327,8 +332,7 @@ public class PetFormFragment extends Fragment {
     }
 
     private void setActionBarTitle() {
-        String title = formAction == FormAction.EDIT ?
-                getString(R.string.title_edit) : getString(R.string.title_create);
+        String title = isEditing() ? getString(R.string.title_edit) : getString(R.string.title_create);
         Objects.requireNonNull(
                 ((AppCompatActivity) requireActivity()).getSupportActionBar()
         ).setTitle(title);
@@ -348,10 +352,6 @@ public class PetFormFragment extends Fragment {
     private void setPetFromArgs() {
         String petJson = PetFormFragmentArgs.fromBundle(getArguments()).getPet();
         pet = new Gson().fromJson(petJson, Pet.class);
-    }
-
-    private void setFormActionFromArgs() {
-        formAction = PetFormFragmentArgs.fromBundle(getArguments()).getAction();
     }
 
     private boolean isValidForm() {
@@ -384,7 +384,7 @@ public class PetFormFragment extends Fragment {
         fabPicture.setVisibility(View.INVISIBLE);
     }
 
-    private void editMode() {
+    private void writeMode() {
         menuSave.setVisible(true);
         menuEdit.setVisible(false);
         menuDelete.setVisible(false);
@@ -396,6 +396,10 @@ public class PetFormFragment extends Fragment {
         editSexo.setFocusableInTouchMode(true);
         loadDropdownOptions();
         fabPicture.setVisibility(View.VISIBLE);
+    }
+
+    private boolean isEditing() {
+        return pet.getId() != null;
     }
 
     @Override

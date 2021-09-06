@@ -9,6 +9,7 @@ import android.text.style.TextAppearanceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -55,6 +56,7 @@ public class RegisterFragment extends Fragment {
     private PetViewModel petViewModel;
     private FragmentRegisterBinding binding;
     private NavController navController;
+    private Button buttonLogin;
     private TextInputEditText editFirstname, editLastname, editDni, editEmail,
             editPassword, editPassword2;
     private TextInputLayout layoutFirstname, layoutLastname, layoutDni, layoutEmail,
@@ -143,6 +145,7 @@ public class RegisterFragment extends Fragment {
         layoutEmail = binding.layoutEmail;
         layoutPassword = binding.layoutPassword;
         layoutPassword2 = binding.layoutPassword2;
+        buttonLogin = binding.buttonLogin;
 
         // saved state
         editFirstname.setText(firstname);
@@ -166,7 +169,7 @@ public class RegisterFragment extends Fragment {
         editPassword.addTextChangedListener(new TextFieldValidator(editPassword));
         editPassword2.addTextChangedListener(new TextFieldValidator(editPassword2));
 
-        binding.buttonLogin.setOnClickListener(v -> {
+        buttonLogin.setOnClickListener(v -> {
             if (!isFormValid()) {
                 AlertUtil.showErrorAlert(getString(R.string.alert_complete_fields),
                         requireContext());
@@ -189,11 +192,13 @@ public class RegisterFragment extends Fragment {
     }
 
     private void postUser() {
+        buttonLogin.setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
         User newUser = buildUserFromForm();
         userService.create(newUser).enqueue(new Callback<PostUserResponse>() {
             @Override
             public void onResponse(@NonNull Call<PostUserResponse> call, @NonNull Response<PostUserResponse> response) {
+                buttonLogin.setEnabled(true);
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     if (response.body() == null || response.body().getId() == null) {
@@ -217,6 +222,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<PostUserResponse> call, @NonNull Throwable t) {
                 progressBar.setVisibility(View.GONE);
+                buttonLogin.setEnabled(true);
                 AlertUtil.showGenericErrorAlert(requireContext());
                 t.printStackTrace();
             }

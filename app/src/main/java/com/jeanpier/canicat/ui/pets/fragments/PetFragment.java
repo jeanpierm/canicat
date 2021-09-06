@@ -18,7 +18,6 @@ import androidx.navigation.Navigation;
 
 import com.google.gson.Gson;
 import com.jeanpier.canicat.R;
-import com.jeanpier.canicat.core.FormAction;
 import com.jeanpier.canicat.data.model.Pet;
 import com.jeanpier.canicat.databinding.FragmentPetListBinding;
 import com.jeanpier.canicat.ui.pets.adapters.PetRecyclerViewAdapter;
@@ -79,7 +78,6 @@ public class PetFragment extends Fragment {
         initViewModels();
 //        vuelve a cargar las mascotas cada vez que se muestra el fragmento,
 //        para así actualizar la lista después de añadir/editar/eliminar
-        petViewModel.loadPets();
         initRecyclerView();
         initListeners();
     }
@@ -90,12 +88,10 @@ public class PetFragment extends Fragment {
     }
 
     private void initListeners() {
-        Gson gson = new Gson();
+        String emptyPet = new Gson().toJson(new Pet());
         binding.fabAddPet.setOnClickListener(v -> {
             PetFragmentDirections.ActionNavPetsToNavPetForm action =
-                    PetFragmentDirections.actionNavPetsToNavPetForm(
-                            gson.toJson(new Pet()), FormAction.CREATE
-                    );
+                    PetFragmentDirections.actionNavPetsToNavPetForm(emptyPet);
             Navigation.findNavController(v).navigate(action);
         });
     }
@@ -108,6 +104,7 @@ public class PetFragment extends Fragment {
         petViewModel.isLoading().observe(getViewLifecycleOwner(), integer -> {
             binding.progressBar.setVisibility(integer);
         });
+//        petViewModel.loadPets();
     }
 
     @Override

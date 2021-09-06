@@ -1,6 +1,5 @@
 package com.jeanpier.canicat.ui.login;
 
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
@@ -171,12 +170,14 @@ public class LoginFragment extends Fragment {
     }
 
     private void login() {
+        buttonLogin.setEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
         String email = TextFieldUtil.getString(editEmail);
         String password = TextFieldUtil.getString(editPassword);
         authService.login(email, password).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
+                buttonLogin.setEnabled(true);
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     if (response.body() == null || response.body().getUid() == null) {
@@ -203,6 +204,7 @@ public class LoginFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 AlertUtil.showGenericErrorAlert(requireContext());
                 t.printStackTrace();
+                buttonLogin.setEnabled(true);
             }
         });
     }

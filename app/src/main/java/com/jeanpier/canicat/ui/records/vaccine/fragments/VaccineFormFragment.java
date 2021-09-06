@@ -19,16 +19,19 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jeanpier.canicat.R;
-import com.jeanpier.canicat.core.FormAction;
-import com.jeanpier.canicat.data.model.Pet;
 import com.jeanpier.canicat.data.model.Vaccine;
 import com.jeanpier.canicat.data.network.VaccineService;
+import com.jeanpier.canicat.data.network.responses.ErrorResponse;
 import com.jeanpier.canicat.databinding.FragmentVaccineFormBinding;
 import com.jeanpier.canicat.ui.records.vaccine.viewmodels.VaccineViewModel;
 import com.jeanpier.canicat.util.AlertUtil;
 import com.jeanpier.canicat.util.ToastUtil;
 
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -52,6 +55,9 @@ public class VaccineFormFragment extends Fragment {
     private static final String TAG = "VaccineFormFragment";
     private final VaccineService vaccineService = new VaccineService();
     private final Gson gson = new Gson();
+    private final Type errorType = new TypeToken<ErrorResponse>() {
+    }.getType();
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,21 +118,21 @@ public class VaccineFormFragment extends Fragment {
 
         vaccineService.saveVaccineRecord(vaccine).enqueue(new Callback<Vaccine>() {
             @Override
-            public void onResponse(@NonNull Call<Vaccine> call, Response<Vaccine> response) {
+            public void onResponse(@NonNull Call<Vaccine> call, @NonNull Response<Vaccine> response) {
                 binding.progressBar.setVisibility(View.GONE);
-                if (!response.isSuccessful()) {
-                    ToastUtil.show(getContext(), getString(R.string.save_vaccine_error));
-                } else {
+                if (response.isSuccessful()) {
+                    clearVaccineForm();
+                    vaccineViewModel.loadVaccines();
                     ToastUtil.show(getContext(), getString(R.string.save_vaccine_success));
-                    binding.vaccineName.setText("");
-                    binding.vaccineType.setText("");
-                    binding.vaccineDescription.setText("");
-                    binding.textDate.setText("");
-                    binding.textDateNext.setText("");
-                    lastDate = "";
-                    nextDate = "";
 //                    vuelve a la pantalla de vacunas
                     navController.navigate(R.id.action_nav_vaccine_form_to_nav_records);
+                } else {
+                    if (response.errorBody() == null) {
+                        AlertUtil.showErrorAlert(getString(R.string.save_vaccine_error), requireContext());
+                        return;
+                    }
+                    ErrorResponse errorResponse = gson.fromJson(response.errorBody().charStream(), errorType);
+                    AlertUtil.showErrorAlert(errorResponse.getError(), requireContext());
                 }
             }
 
@@ -137,6 +143,16 @@ public class VaccineFormFragment extends Fragment {
                 Log.d(TAG, "onResponse: error" + t.getMessage());
             }
         });
+    }
+
+    private void clearVaccineForm() {
+        binding.vaccineName.setText("");
+        binding.vaccineType.setText("");
+        binding.vaccineDescription.setText("");
+        binding.textDate.setText("");
+        binding.textDateNext.setText("");
+        lastDate = "";
+        nextDate = "";
     }
 
     private void initListeners() {
