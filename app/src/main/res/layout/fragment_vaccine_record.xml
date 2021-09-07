@@ -20,11 +20,12 @@
 
     <TextView
         android:id="@+id/vaccinename"
-        android:layout_width="109dp"
-        android:layout_height="28dp"
+        android:layout_width="123dp"
+        android:layout_height="42dp"
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textSize="13dp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/vaccine_nextdate"
         app:layout_constraintStart_toEndOf="@id/item_number"
@@ -33,11 +34,12 @@
 
     <TextView
         android:id="@+id/vaccine_nextdate"
-        android:layout_width="130dp"
-        android:layout_height="49dp"
+        android:layout_width="147dp"
+        android:layout_height="44dp"
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textSize="13dp"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_delete"
         app:layout_constraintStart_toEndOf="@id/vaccinename"
@@ -51,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:textAppearance="?attr/textAppearanceListItem"
-        app:icon="@android:drawable/ic_menu_delete"
+        app:icon="@drawable/ic_trash"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

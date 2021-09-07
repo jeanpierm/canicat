@@ -14,7 +14,10 @@ import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.gson.Gson;
 import com.jeanpier.canicat.R;
+import com.jeanpier.canicat.data.model.Pet;
+import com.jeanpier.canicat.data.model.Vaccine;
 import com.jeanpier.canicat.databinding.FragmentRecordsBinding;
 
 public class RecordsFragment extends Fragment {
@@ -36,8 +39,11 @@ public class RecordsFragment extends Fragment {
     }
 
     private void initListeners() {
+        String emptyVaccine = new Gson().toJson(new Vaccine());
         binding.vaccineAdd.setOnClickListener(v -> {
-            navController.navigate(R.id.action_nav_records_to_nav_vaccine_form);
+            RecordsFragmentDirections.ActionNavRecordsToNavVaccineForm action =
+                    RecordsFragmentDirections.actionNavRecordsToNavVaccineForm(emptyVaccine);
+            Navigation.findNavController(v).navigate(action);
         });
 
     }

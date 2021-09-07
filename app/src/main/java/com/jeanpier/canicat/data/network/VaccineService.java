@@ -23,4 +23,8 @@ public class VaccineService {
         return dataApi.deleteVaccine(vaccineId);
     }
 
+    public Call<Void> updateVaccine(String vaccineId,  Vaccine vaccine){
+        return dataApi.updateVaccineById(vaccineId, vaccine);
+    }
+
 }

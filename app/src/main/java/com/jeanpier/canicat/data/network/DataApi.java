@@ -30,7 +30,6 @@ public interface DataApi {
     @GET(Routes.API_PATH + Routes.USERS_PATH + "/{userId}" + Routes.PETS_PATH)
     Call<List<Pet>> getPetsByUserId(@Path("userId") String userId);
 
-
     @POST(Routes.API_PATH + Routes.USERS_PATH)
     Call<PostUserResponse> createUser(@Body User user);
 
@@ -54,6 +53,9 @@ public interface DataApi {
 
     @DELETE(Routes.API_PATH + Routes.VACCINE_PATH + "/{vaccineId}")
     Call<Void> deleteVaccine(@Path("vaccineId") String id);
+
+    @PATCH(Routes.API_PATH + Routes.VACCINE_PATH + "/{vaccineId}")
+    Call<Void> updateVaccineById(@Path("vaccineId") String vaccineId, @Body Vaccine vaccine);
 
 
     @POST(Routes.API_PATH + Routes.LOGIN_PATH)

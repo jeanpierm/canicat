@@ -12,6 +12,7 @@ import android.widget.DatePicker;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -29,12 +30,14 @@ import com.jeanpier.canicat.data.network.responses.ErrorResponse;
 import com.jeanpier.canicat.databinding.FragmentVaccineFormBinding;
 import com.jeanpier.canicat.ui.records.vaccine.viewmodels.VaccineViewModel;
 import com.jeanpier.canicat.util.AlertUtil;
+import com.jeanpier.canicat.util.TextFieldUtil;
 import com.jeanpier.canicat.util.ToastUtil;
 
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -92,29 +95,46 @@ public class VaccineFormFragment extends Fragment {
     }
 
     private void initUI() {
+        bindViews();
         binding.progressBar.setVisibility(View.GONE);
         setVaccineFromArgs();
-        if(!vaccine.getPetId().isEmpty()){ fillFormVaccine();}
+        if(isEditing()){ fillFormVaccine();}
+        setActionBarTitle();
+        setButtonTitle();
         initListeners();
         initViewModels();
     }
 
+    private void setVaccineFromArgs(){
+        String vaccineJson = VaccineFormFragmentArgs.fromBundle(getArguments()).getVaccine();
+        vaccine =  new Gson().fromJson(vaccineJson, Vaccine.class);
+    }
+
     private void bindViews(){
         editName = binding.vaccineName;
-        editType = binding.vaccineName;
+        editType = binding.vaccineType;
         editDescription = binding.vaccineDescription;
+    }
+
+    private boolean isEditing() {
+        return vaccine.getId() != null;
+    }
+
+    private void setActionBarTitle() {
+        String title = isEditing() ? getString(R.string.title_edit_vaccine) : getString(R.string.title_add_vaccine);
+        Objects.requireNonNull(
+                ((AppCompatActivity) requireActivity()).getSupportActionBar()
+        ).setTitle(title);
+    }
+
+    private void setButtonTitle(){
+        String title = isEditing() ? getString(R.string.title_menu_edit) : getString(R.string.title_menu_save);
+        binding.guardar.setText(title);
     }
 
     private void postVaccine() {
         binding.progressBar.setVisibility(View.VISIBLE);
-        Vaccine vaccine = new Vaccine(
-                binding.vaccineName.getText().toString(),
-                binding.vaccineType.getText().toString(),
-                lastDate,
-                nextDate,
-                binding.vaccineDescription.getText().toString(),
-                petId
-        );
+        Vaccine vaccine = setValueEntityVaccine();
 
         vaccineService.saveVaccineRecord(vaccine).enqueue(new Callback<Vaccine>() {
             @Override
@@ -145,14 +165,35 @@ public class VaccineFormFragment extends Fragment {
         });
     }
 
-    private void clearVaccineForm() {
-        binding.vaccineName.setText("");
-        binding.vaccineType.setText("");
-        binding.vaccineDescription.setText("");
-        binding.textDate.setText("");
-        binding.textDateNext.setText("");
-        lastDate = "";
-        nextDate = "";
+    private void updateVaccine(){
+        binding.progressBar.setVisibility(View.VISIBLE);
+        Vaccine vaccineupdate = setValueEntityVaccine();
+        Call<Void> call = vaccineService.updateVaccine(vaccine.getId(), vaccineupdate);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                binding.progressBar.setVisibility(View.GONE);
+                if (response.isSuccessful()){
+                    vaccineViewModel.loadVaccines();
+                    ToastUtil.show(requireContext(), getString(R.string.update_vaccine));
+                }else{
+                    if (response.errorBody() == null) {
+                        AlertUtil.showErrorAlert(getString(R.string.update_error_vaccine), requireContext());
+                        return;
+                    }
+                    ErrorResponse errorResponse = gson.fromJson(response.errorBody().charStream(), errorType);
+                    AlertUtil.showErrorAlert(errorResponse.getError(), requireContext());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                binding.progressBar.setVisibility(View.GONE);
+                AlertUtil.showGenericErrorAlert(requireContext());
+                t.printStackTrace();
+            }
+        });
+
     }
 
     private void initListeners() {
@@ -162,7 +203,11 @@ public class VaccineFormFragment extends Fragment {
                         requireContext());
                 return;
             }
-            postVaccine();
+            if(isEditing()){
+                updateVaccine();
+            }else{
+                postVaccine();
+            }
         });
 
         binding.datepicker.setOnClickListener(new View.OnClickListener() {
@@ -213,8 +258,7 @@ public class VaccineFormFragment extends Fragment {
                 cal.set(year, month, dayOfMonth);
                 String format = "yyyy-MM-dd";
                 lastDate = new SimpleDateFormat(format).format(cal.getTime());
-                String hoy = DateFormat.getDateInstance().format(cal.getTime());
-                binding.textDate.setText(hoy);
+                binding.txtLastDate.setText(lastDate);
             }
         };
 
@@ -226,8 +270,7 @@ public class VaccineFormFragment extends Fragment {
                 cal.set(year, month, dayOfMonth);
                 String format = "yyyy-MM-dd";
                 nextDate = new SimpleDateFormat(format).format(cal.getTime());
-                String hoy = DateFormat.getDateInstance().format(cal.getTime());
-                binding.textDateNext.setText(hoy);
+                binding.txtNextDate.setText(nextDate);
             }
         };
     }
@@ -236,18 +279,39 @@ public class VaccineFormFragment extends Fragment {
         editName.setText(vaccine.getName());
         editType.setText(vaccine.getType());
         editDescription.setText(vaccine.getDescription());
+        lastDate = vaccine.getLastVaccineDate();
+        nextDate = vaccine.getNextVaccineDate();
+        binding.txtLastDate.setText(lastDate);
+        binding.txtNextDate.setText(nextDate);
+    }
+
+    private Vaccine setValueEntityVaccine(){
+        String name = TextFieldUtil.getString(editName);
+        String type = TextFieldUtil.getString(editType);
+        String description = TextFieldUtil.getString(editDescription);
+        return new Vaccine(name, type, lastDate, nextDate, description, petId);
+    }
+
+    private void clearVaccineForm() {
+        editName.setText("");
+        editType.setText("");
+        editDescription.setText("");
+        binding.txtLastDate.setText("");
+        binding.txtNextDate.setText("");
+        lastDate = "";
+        nextDate = "";
     }
 
     public boolean isValidForm() {
-        if (binding.vaccineName.getText().toString().isEmpty()) {
+        if (editType.getText().toString().isEmpty()) {
             return false;
         }
 
-        if (binding.vaccineType.getText().toString().isEmpty()) {
+        if (editType.getText().toString().isEmpty()) {
             return false;
         }
 
-        if (binding.vaccineDescription.getText().toString().isEmpty()) {
+        if (editDescription.getText().toString().isEmpty()) {
             return false;
         }
 
@@ -256,11 +320,6 @@ public class VaccineFormFragment extends Fragment {
         }
 
         return true;
-    }
-
-    private void setVaccineFromArgs(){
-        String vaccineJson = VaccineFormFragmentArgs.fromBundle(getArguments()).getVaccine();
-        vaccine =  new Gson().fromJson(vaccineJson, Vaccine.class);
     }
 
     @Override

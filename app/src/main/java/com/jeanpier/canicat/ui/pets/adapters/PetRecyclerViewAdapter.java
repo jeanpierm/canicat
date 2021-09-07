@@ -47,41 +47,8 @@ public class PetRecyclerViewAdapter extends RecyclerView.Adapter<PetRecyclerView
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-<<<<<<< HEAD
-        Context context = holder.itemView.getContext();
-        Resources res = context.getResources();
-        Pet currentPet = pets.get(position);
-
-        holder.binding.textName.setText(currentPet.getName());
-        holder.binding.textType.setText(
-                String.format(res.getString(R.string.text_pet_type), currentPet.getBreed(),
-                        currentPet.getSpecies())
-        );
-
-        if (currentPet.getPicture() != null) {
-//          Load pet picture
-            Glide.with(context)
-                    .load(Routes.BASE_URI + currentPet.getPicture())
-                    .placeholder(R.drawable.ic_pet_placeholder)
-                    .error(R.drawable.ic_pet_placeholder)
-//                  Se desactiva el caché para evitar que al cambiar de imagen aparezca la antigua
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(holder.binding.circlePicture);
-        }
-
-        holder.binding.layoutPet.setOnClickListener(v -> {
-            PetFragmentDirections.ActionNavPetsToNavPetForm action =
-                    PetFragmentDirections.actionNavPetsToNavPetForm(
-                            new Gson().toJson(currentPet), FormAction.EDIT
-                    );
-            Navigation.findNavController(v).navigate(action);
-        });
-
-=======
         holder.render(pets.get(position));
         holder.setClickLayoutListener(pets.get(position));
->>>>>>> cea51c83c3f40fcb173618906bb1b7f6008e38ac
     }
 
     @Override

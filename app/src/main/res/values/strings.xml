@@ -81,5 +81,9 @@
     <string name="vaccine_deleted_successful">Vacuna eliminada correctamente</string>
     <string name="label_type">Tipo de vacuna</string>
     <string name="label_description">Descripción</string>
+    <string name="title_edit_vaccine">Editar Vacuna</string>
+    <string name="title_add_vaccine">Crear Vacuna</string>
+    <string name="update_vaccine">Vacuna actualizada correctamente</string>
+    <string name="update_error_vaccine">Ocurrió un error al intentar actualizar la vacuna :(</string>
 
 </resources>
