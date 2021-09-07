@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -319,7 +320,6 @@ public class PetFormFragment extends Fragment {
     private void initViewModels() {
         petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
         petViewModel.getUID().observe(getViewLifecycleOwner(), currentUid -> uid = currentUid);
-
         vaccineViewModel = new ViewModelProvider(requireActivity()).get(VaccineViewModel.class);
     }
 

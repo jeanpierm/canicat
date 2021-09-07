@@ -33,10 +33,10 @@ import retrofit2.Response;
 
 public class VaccineRecyclerViewAdapter extends RecyclerView.Adapter<VaccineRecyclerViewAdapter.ViewHolder> {
 
-    private VaccineViewModel vaccineViewModel;
+    private final VaccineViewModel vaccineViewModel;
     private static final String TAG = VaccineRecyclerViewAdapter.class.getSimpleName();
     private List<Vaccine> vaccines;
-    private FragmentActivity fragmentActivity;
+    private final FragmentActivity fragmentActivity;
     private final VaccineService vaccineService = new VaccineService();
     private final Gson gson = new Gson();
     private final Type errorType = new TypeToken<ErrorResponse>() {
@@ -53,7 +53,6 @@ public class VaccineRecyclerViewAdapter extends RecyclerView.Adapter<VaccineRecy
         this.vaccines = vaccines;
         notifyDataSetChanged();
     }
-
 
     @NonNull
     @Override

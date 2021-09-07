@@ -12,5 +12,9 @@
             android:id="@+id/nav_search_canicat"
             android:icon="@android:drawable/ic_menu_search"
             android:title="@string/menu_search_canicat" />
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/ic_menu_logout"
+            android:title="@string/menu_logout" />
     </group>
 </menu>

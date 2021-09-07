@@ -48,6 +48,10 @@ public class VaccineViewModel extends AndroidViewModel {
         return vaccines;
     }
 
+    public void clearVaccines() {
+        vaccines = null;
+    }
+
     public LiveData<String> getPetId() {
         return petId;
     }

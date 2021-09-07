@@ -50,6 +50,10 @@ public class PetViewModel extends AndroidViewModel {
         return pets;
     }
 
+    public void clearPets() {
+        pets = null;
+    }
+
     public LiveData<String> getUID() {
         return uid;
     }

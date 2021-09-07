@@ -1,5 +1,7 @@
 package com.jeanpier.canicat.ui.login;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
@@ -34,7 +36,6 @@ import com.jeanpier.canicat.data.network.responses.LoginResponse;
 import com.jeanpier.canicat.databinding.FragmentLoginBinding;
 import com.jeanpier.canicat.ui.pets.viewmodels.PetViewModel;
 import com.jeanpier.canicat.util.AlertUtil;
-import com.jeanpier.canicat.util.KeyboardUtil;
 import com.jeanpier.canicat.util.TextFieldUtil;
 import com.jeanpier.canicat.util.ToastUtil;
 
@@ -118,13 +119,22 @@ public class LoginFragment extends Fragment {
 
     private void initUI() {
         initViewModels();
-        bindViews();
+        handleLoginPreferences();
+        initViews();
         buildGoToRegisterTextSpan();
         initListeners();
         progressBar.setVisibility(View.GONE);
     }
 
-    private void bindViews() {
+    private void handleLoginPreferences() {
+        SharedPreferences preferences = requireActivity().getPreferences(Context.MODE_PRIVATE);
+        String uid = preferences.getString(getString(R.string.uid_key), null);
+        if (uid != null) {
+            petViewModel.setUID(uid);
+        }
+    }
+
+    private void initViews() {
         progressBar = binding.progressBar;
         editEmail = binding.editEmail;
         editPassword = binding.editPassword;
@@ -140,6 +150,10 @@ public class LoginFragment extends Fragment {
 
     private void initViewModels() {
         petViewModel = new ViewModelProvider(requireActivity()).get(PetViewModel.class);
+        // navegación condicional
+        petViewModel.getUID().observe(getViewLifecycleOwner(), uid -> {
+            if (uid != null) navigateToPets();
+        });
     }
 
     private void initListeners() {
@@ -185,10 +199,10 @@ public class LoginFragment extends Fragment {
                         return;
                     }
                     String uid = response.body().getUid();
+                    String displayname = response.body().getFirstname();
                     petViewModel.setUID(uid);
+                    setLoginPreferences(uid, displayname);
                     ToastUtil.show(requireContext(), getString(R.string.login_successfull));
-                    KeyboardUtil.hideKeyboard(requireActivity());
-                    navigateToPets();
                 } else {
                     if (response.errorBody() == null) {
                         AlertUtil.showErrorAlert(getString(R.string.login_error), requireContext());
@@ -207,6 +221,14 @@ public class LoginFragment extends Fragment {
                 buttonLogin.setEnabled(true);
             }
         });
+    }
+
+    private void setLoginPreferences(String uid, String displayname) {
+        SharedPreferences preferences = requireActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(getString(R.string.uid_key), uid);
+        editor.putString(getString(R.string.displayname_key), displayname);
+        editor.apply();
     }
 
     private boolean isFormValid() {
