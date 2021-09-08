@@ -84,14 +84,9 @@ public class PetRecyclerViewAdapter extends RecyclerView.Adapter<PetRecyclerView
 
         private void loadPicture(String picture) {
             Context context = itemView.getContext();
-//            CircularProgressDrawable progressDrawable = new CircularProgressDrawable(context);
-//            progressDrawable.setStrokeWidth(5);
-//            progressDrawable.setCenterRadius(30);
-//            progressDrawable.start();
 
             GlideApp.with(context)
                     .load(Routes.BASE_URI + picture)
-//                    .placeholder(progressDrawable)
                     .error(R.drawable.ic_pet_placeholder)
 //                  Se desactiva el caché para evitar que al cambiar de imagen aparezca la antigua
                     .skipMemoryCache(true)

@@ -20,8 +20,6 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
-
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jeanpier.canicat.R;
 import com.jeanpier.canicat.data.model.Vaccine;
@@ -34,7 +32,6 @@ import com.jeanpier.canicat.util.TextFieldUtil;
 import com.jeanpier.canicat.util.ToastUtil;
 
 import java.lang.reflect.Type;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Objects;
@@ -98,19 +95,21 @@ public class VaccineFormFragment extends Fragment {
         bindViews();
         binding.progressBar.setVisibility(View.GONE);
         setVaccineFromArgs();
-        if(isEditing()){ fillFormVaccine();}
+        if (isEditing()) {
+            fillFormVaccine();
+        }
         setActionBarTitle();
         setButtonTitle();
         initListeners();
         initViewModels();
     }
 
-    private void setVaccineFromArgs(){
+    private void setVaccineFromArgs() {
         String vaccineJson = VaccineFormFragmentArgs.fromBundle(getArguments()).getVaccine();
-        vaccine =  new Gson().fromJson(vaccineJson, Vaccine.class);
+        vaccine = new Gson().fromJson(vaccineJson, Vaccine.class);
     }
 
-    private void bindViews(){
+    private void bindViews() {
         editName = binding.vaccineName;
         editType = binding.vaccineType;
         editDescription = binding.vaccineDescription;
@@ -127,18 +126,20 @@ public class VaccineFormFragment extends Fragment {
         ).setTitle(title);
     }
 
-    private void setButtonTitle(){
+    private void setButtonTitle() {
         String title = isEditing() ? getString(R.string.title_menu_edit) : getString(R.string.title_menu_save);
         binding.guardar.setText(title);
     }
 
     private void postVaccine() {
+        binding.guardar.setEnabled(false);
         binding.progressBar.setVisibility(View.VISIBLE);
         Vaccine vaccine = setValueEntityVaccine();
 
         vaccineService.saveVaccineRecord(vaccine).enqueue(new Callback<Vaccine>() {
             @Override
             public void onResponse(@NonNull Call<Vaccine> call, @NonNull Response<Vaccine> response) {
+                binding.guardar.setEnabled(true);
                 binding.progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     clearVaccineForm();
@@ -158,6 +159,7 @@ public class VaccineFormFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<Vaccine> call, @NonNull Throwable t) {
+                binding.guardar.setEnabled(true);
                 binding.progressBar.setVisibility(View.GONE);
                 ToastUtil.show(requireContext(), getString(R.string.save_vaccine_fail));
                 Log.d(TAG, "onResponse: error" + t.getMessage());
@@ -165,18 +167,20 @@ public class VaccineFormFragment extends Fragment {
         });
     }
 
-    private void updateVaccine(){
+    private void updateVaccine() {
+        binding.guardar.setEnabled(false);
         binding.progressBar.setVisibility(View.VISIBLE);
         Vaccine vaccineupdate = setValueEntityVaccine();
         Call<Void> call = vaccineService.updateVaccine(vaccine.getId(), vaccineupdate);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                binding.guardar.setEnabled(true);
                 binding.progressBar.setVisibility(View.GONE);
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     vaccineViewModel.loadVaccines();
                     ToastUtil.show(requireContext(), getString(R.string.update_vaccine));
-                }else{
+                } else {
                     if (response.errorBody() == null) {
                         AlertUtil.showErrorAlert(getString(R.string.update_error_vaccine), requireContext());
                         return;
@@ -188,6 +192,7 @@ public class VaccineFormFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                binding.guardar.setEnabled(true);
                 binding.progressBar.setVisibility(View.GONE);
                 AlertUtil.showGenericErrorAlert(requireContext());
                 t.printStackTrace();
@@ -203,9 +208,9 @@ public class VaccineFormFragment extends Fragment {
                         requireContext());
                 return;
             }
-            if(isEditing()){
+            if (isEditing()) {
                 updateVaccine();
-            }else{
+            } else {
                 postVaccine();
             }
         });
@@ -285,7 +290,7 @@ public class VaccineFormFragment extends Fragment {
         binding.txtNextDate.setText(nextDate);
     }
 
-    private Vaccine setValueEntityVaccine(){
+    private Vaccine setValueEntityVaccine() {
         String name = TextFieldUtil.getString(editName);
         String type = TextFieldUtil.getString(editType);
         String description = TextFieldUtil.getString(editDescription);

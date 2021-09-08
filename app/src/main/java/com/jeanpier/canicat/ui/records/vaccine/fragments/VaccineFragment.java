@@ -5,12 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import com.jeanpier.canicat.R;
 import com.jeanpier.canicat.databinding.FragmentVaccineRecordListBinding;
 import com.jeanpier.canicat.ui.records.vaccine.adapters.VaccineRecyclerViewAdapter;
 import com.jeanpier.canicat.ui.records.vaccine.viewmodels.VaccineViewModel;
@@ -25,7 +28,6 @@ public class VaccineFragment extends Fragment {
     private static final String TAG = VaccineFragment.class.getSimpleName();
     private VaccineViewModel vaccineViewModel;
     private FragmentVaccineRecordListBinding binding;
-    private NavController navController;
     private VaccineRecyclerViewAdapter adapter;
 
     @Override

@@ -1,7 +1,6 @@
 package com.jeanpier.canicat.ui.pets.viewmodels;
 
 import android.app.Application;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -16,7 +15,6 @@ import com.jeanpier.canicat.data.model.Pet;
 import com.jeanpier.canicat.data.network.PetService;
 import com.jeanpier.canicat.data.network.responses.ErrorResponse;
 import com.jeanpier.canicat.util.AlertUtil;
-import com.jeanpier.canicat.util.ToastUtil;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -71,6 +69,7 @@ public class PetViewModel extends AndroidViewModel {
     }
 
     public void loadPets() {
+        if (pets == null) pets = new MutableLiveData<>();
         loading.postValue(View.VISIBLE);
         String userId = uid.getValue();
         petService.getByUserId(userId).enqueue(new Callback<List<Pet>>() {

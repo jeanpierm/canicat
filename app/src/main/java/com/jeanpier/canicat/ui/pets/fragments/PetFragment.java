@@ -113,7 +113,6 @@ public class PetFragment extends Fragment {
     }
 
     private void setNameOnNavDrawerHeader() {
-        // TODO: Obtener el TextView correctamente
         String displayname = preferences.getString(
                 getString(R.string.displayname_key),
                 getString(R.string.app_name)

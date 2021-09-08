@@ -27,6 +27,7 @@ import retrofit2.http.Path;
 
 public interface DataApi {
 
+//  pets routes
     @GET(Routes.API_PATH + Routes.USERS_PATH + "/{userId}" + Routes.PETS_PATH)
     Call<List<Pet>> getPetsByUserId(@Path("userId") String userId);
 
@@ -39,12 +40,10 @@ public interface DataApi {
     @DELETE(Routes.API_PATH + Routes.PETS_PATH + "/{petId}")
     Call<Void> deletePetById(@Path("petId") String id);
 
-
     @POST(Routes.API_PATH + Routes.PETS_PATH)
     Call<PostPetResponse> createPet(@Body Pet pet);
 
-    //vaccine routes
-
+//  vaccine routes
     @POST(Routes.API_PATH + Routes.VACCINE_PATH)
     Call<Vaccine> saveVaccineRecord(@Body Vaccine vaccine);
 
@@ -57,7 +56,7 @@ public interface DataApi {
     @PATCH(Routes.API_PATH + Routes.VACCINE_PATH + "/{vaccineId}")
     Call<Void> updateVaccineById(@Path("vaccineId") String vaccineId, @Body Vaccine vaccine);
 
-
+//  auth route
     @POST(Routes.API_PATH + Routes.LOGIN_PATH)
     @FormUrlEncoded
     Call<LoginResponse> login(@Field("email") String email, @Field("password") String password);

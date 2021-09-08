@@ -69,6 +69,7 @@ public class VaccineViewModel extends AndroidViewModel {
     }
 
     public void loadVaccines() {
+        if (vaccines == null) vaccines = new MutableLiveData<>();
         loading.postValue(View.VISIBLE);
         String currentPetId = petId.getValue();
         vaccineService.getVaccineByPetId(currentPetId).enqueue(new Callback<List<Vaccine>>() {

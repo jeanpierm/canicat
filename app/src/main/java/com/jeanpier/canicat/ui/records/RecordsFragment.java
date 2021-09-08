@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -34,6 +35,20 @@ public class RecordsFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        viewPager = binding.pager;
+        navController = Navigation.findNavController(view);
+        recordsAdapter = new RecordsAdapter(this);
+        viewPager.setAdapter(recordsAdapter);
+        String[] titles = getResources().getStringArray(R.array.records);
+        new TabLayoutMediator(binding.tabLayaout, viewPager,
+                (tab, position) -> tab.setText(titles[position])
+        ).attach();
+        navController = Navigation.findNavController(view);
+        initUI();
+    }
+
     private void initUI() {
         initListeners();
     }
@@ -48,16 +63,4 @@ public class RecordsFragment extends Fragment {
 
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        viewPager = binding.pager;
-        recordsAdapter = new RecordsAdapter(this);
-        viewPager.setAdapter(recordsAdapter);
-        String[] titles = getResources().getStringArray(R.array.records);
-        new TabLayoutMediator(binding.tabLayaout, viewPager,
-                (tab, position) -> tab.setText(titles[position])
-        ).attach();
-        navController = Navigation.findNavController(view);
-        initUI();
-    }
 }

@@ -73,6 +73,9 @@
         <action
             android:id="@+id/action_nav_records_to_nav_vaccine_form"
             app:destination="@id/nav_vaccine_form" />
+        <action
+            android:id="@+id/action_nav_records_to_nav_pet_form"
+            app:destination="@id/nav_pet_form" />
     </fragment>
     <fragment
         android:id="@+id/nav_vaccine_form"
